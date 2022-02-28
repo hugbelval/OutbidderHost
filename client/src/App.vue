@@ -1,15 +1,18 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
+  <UserComponent/>
   <PostComponent msg="Welcome to Your Vue.js App"/>
 </template>
 
 <script>
 import PostComponent from './components/PostComponent.vue'
+import UserComponent from './components/UserComponent.vue'
 
 export default {
   name: 'App',
   components: {
-    PostComponent
+    PostComponent,
+    UserComponent
 }
 }
 </script>

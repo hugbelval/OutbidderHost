@@ -3,40 +3,38 @@ const mongodb = require('mongodb');
 
 const router = express.Router();
 
-// Get Posts
+// Get Users
 router.get('/', async (req, res) => {
-    const posts = await loadPostsCollection();
-    res.send(await posts.find({}).toArray());
+    const users = await loadUsersCollection();
+    res.send(await users.find({}).toArray());
 });
 
 
-
-// Add Post
+// Add User
 router.post('/', async (req, res) =>{
-    const posts = await loadPostsCollection();
-    await posts.insertOne({
-        text: req.body.text,
-        createdAt: new Date()
+    const users = await loadUsersCollection();
+    console.log("add user"+req.body.name);
+    await users.insertOne({
+        // Inclure tous les attributs du user
+        name: req.body.name
     });
     res.status(201).send();
 });
 
-// Delete Post
+// Delete User
 router.delete('/:id', async (req, res) => {
-    const posts = await loadPostsCollection();
-    await posts.deleteOne({_id: new mongodb.ObjectId(req.params.id)});
+    const users = await loadUsersCollection();
+    await users.deleteOne({_id: new mongodb.ObjectId(req.params.id)});
     res.status(200).send();
 });
 
 
-
-async function loadPostsCollection(){
-    console.log("allo1")
+async function loadUsersCollection(){
     const client = await mongodb.MongoClient.connect
     ('mongodb+srv://encant123:encant123@encantdb.cqhf2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
         useNewUrlParser: true
     })
-    return client.db('encantdb').collection('posts');
+    return client.db('encantdb').collection('users');
 }
 
 
