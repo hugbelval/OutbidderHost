@@ -20,7 +20,7 @@ import HelloWorld from '@/components/HelloWorld.vue';
 import PostService from '@/PostService';
 
 export default {
-  name: 'HomeView',
+  name: 'BidsView',
   components: {
     HelloWorld,
   },

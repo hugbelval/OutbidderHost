@@ -8,6 +8,8 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
+//app.use(express.static(path.join(__dirname, 'public')));
+
 const posts = require('./routes/api/posts');
 const users = require('./routes/api/users');
 

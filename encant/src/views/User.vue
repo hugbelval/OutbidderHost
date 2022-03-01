@@ -1,3 +1,4 @@
+<!-- eslint-disable -->
 <template>
   <div class="container">
     <h1>User component</h1>
@@ -16,27 +17,26 @@
     </ul>
   </div>
 </template>
-<script>
-/* eslint-disable */ 
+<script> /* eslint-disable */ 
 import UserService from "../UserService"
 
 export default {
-  name: 'UserComponent',
-  data() {
+    name: 'UserComponent',
+    data() {
     return {
       users: [],
       green: '',
       name: ''
     }
-  },
-  async created(){
+    },
+    async created(){
     try {
       this.users = await UserService.getUsers();
     } catch(err){
       this.error = err.message;
     }
-  },
-  methods: {
+    },
+    methods: {
     async createUser() {
       console.log("createUser")
       this.green = 'green'
