@@ -1,8 +1,10 @@
 <template>
   <div class="container">
     <h1>User component</h1>
-    <label for="name">Nom:</label>
+    <label for="name">
     <input v-model="name" type="text" id="name" name="name">
+    Nom:
+    </label>
     <button v-on:click="createUser">Créer Utilisateur</button>
     <h2 v-bind:class="green">List of users:</h2>
     <ul>
@@ -14,8 +16,8 @@
     </ul>
   </div>
 </template>
-
 <script>
+/* eslint-disable */ 
 import UserService from "../UserService"
 
 export default {
@@ -48,26 +50,3 @@ export default {
   }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.green{
-  background-color:green;
-}
-
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-</style>
-

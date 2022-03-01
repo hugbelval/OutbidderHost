@@ -16,6 +16,8 @@
     "mongodb": "^4.4.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "sass": "^1.49.9",
+    "sass-loader": "^12.6.0"
   }
 }

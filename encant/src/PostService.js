@@ -1,6 +1,6 @@
 /* eslint-disable */
 import axios from "axios";
-
+axios.defaults.baseURL = 'http://localhost:5000'
 const url = 'encant/';
 
 class PostService {
@@ -20,18 +20,6 @@ class PostService {
                 reject(err);
             }
         });
-    }
-
-    // Create Post
-    static insertPost(text) {
-        return axios.post(url, {
-            text
-        });
-    }
-
-    // Delete post
-    static deletePost(id) {
-        return axios.delete(`${url}${id}`);
     }
 }
 

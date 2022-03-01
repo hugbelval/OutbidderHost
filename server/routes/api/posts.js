@@ -31,8 +31,8 @@ router.delete('/:id', async (req, res) => {
 
 
 async function loadPostsCollection(){
-    console.log("allo1")
     const client = await mongodb.MongoClient.connect
+    // User au lieu encant123
     ('mongodb+srv://encant123:encant123@encantdb.cqhf2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
         useNewUrlParser: true
     })

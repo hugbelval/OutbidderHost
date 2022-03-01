@@ -2,8 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-
-
 const app = express();
 
 // Middleware
@@ -12,7 +10,6 @@ app.use(cors());
 
 const posts = require('./routes/api/posts');
 const users = require('./routes/api/users');
-
 
 app.use('/users', users);
 app.use('/encant', posts);

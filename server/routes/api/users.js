@@ -13,7 +13,6 @@ router.get('/', async (req, res) => {
 // Add User
 router.post('/', async (req, res) =>{
     const users = await loadUsersCollection();
-    console.log("add user"+req.body.name);
     await users.insertOne({
         // Inclure tous les attributs du user
         name: req.body.name
