@@ -21,7 +21,6 @@ class UserService {
 
     // Create User
     static insertUser(name) {
-        console.log("create user...")
         return axios.post(url, {
             name
         });

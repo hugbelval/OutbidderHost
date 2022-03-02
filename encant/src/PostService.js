@@ -21,6 +21,19 @@ class PostService {
             }
         });
     }
+
+    static getBid(id) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const res = await axios.get(`${url}${id}`);
+                const data = res.data;
+                resolve(data);
+            } catch(err){
+                console.log("Error promise chiée")
+                reject(err);
+            }
+        });
+    }
 }
 
 export default PostService;

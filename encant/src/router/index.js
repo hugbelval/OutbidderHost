@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import BidsView from '../views/Bids.vue';
 import VueAuthentif from '../views/Authentification.vue'
 import VueConnexion from "../views/Connexion.vue"
+import BidVue from '@/views/Bid.vue';
 
 const routes = [
   {
@@ -27,6 +28,11 @@ const routes = [
     path: '/connection',
     name: "Connection",
     component: VueConnexion
+  },
+  {
+    path: '/:id',
+    name: "Bid",
+    component: BidVue
   }
 ];
 

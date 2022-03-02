@@ -1,7 +1,7 @@
 <!-- eslint-disable -->
 <template>
-  <div class="container">
-    <h1>User component</h1>
+  <div>
+    <h1>Information on {{}}</h1>
     <label for="name">
     <input v-model="name" type="text" id="name" name="name">
     Nom:

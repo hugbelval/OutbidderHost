@@ -1,28 +1,27 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
-  <div class="row">
-      <div class="post col-4" v-for="(post, index) in posts" v-bind:item="post"
+  <div>
+    <div class="row">
+      <div class="col-4 mb-2" v-for="(post, index) in posts" v-bind:item="post"
       v-bind:index="index" v-bind:key="post._id">
+      <div class="bid">
         {{`${post.createdAt.getDate()}/${post.createdAt.getMonth()}/
         ${post.createdAt.getFullYear()}`}}
         <p class="text">{{ post.text }}</p>
+        <router-link :to="{ name: 'Bid', params: { id: `${post._id}` }}"
+        class="btn btn-primary w-25">Bid</router-link>
+      </div>
       </div>
     </div>
+  </div>
 </template>
 
-<script>
-/* eslint-disable */ 
+<script>/* eslint-disable */ 
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue';
 import PostService from '@/PostService';
 
 export default {
-  name: 'BidsView',
+  name: 'BidsVue',
   components: {
-    HelloWorld,
   },
   data() {
     return {
@@ -40,3 +39,9 @@ export default {
   }
 };
 </script>
+<style scoped>
+.bid{
+  background-color: grey;
+  padding: 25px;
+}
+</style>

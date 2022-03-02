@@ -9,8 +9,6 @@ router.get('/', async (req, res) => {
     res.send(await posts.find({}).toArray());
 });
 
-
-
 // Add Post
 router.post('/', async (req, res) =>{
     const posts = await loadPostsCollection();
@@ -22,13 +20,16 @@ router.post('/', async (req, res) =>{
 });
 
 // Delete Post
-router.delete('/:id', async (req, res) => {
+//router.delete('/:id', async (req, res) => {
+//    const posts = await loadPostsCollection();
+//    await posts.deleteOne({_id: new mongodb.ObjectId(req.params.id)});
+//    res.status(200).send();
+//});
+
+router.get('/:id', async (req, res) => {
     const posts = await loadPostsCollection();
-    await posts.deleteOne({_id: new mongodb.ObjectId(req.params.id)});
-    res.status(200).send();
-});
-
-
+    res.send(await posts.findOne({"_id":new mongodb.ObjectId(req.params.id)}))
+    });
 
 async function loadPostsCollection(){
     const client = await mongodb.MongoClient.connect
