@@ -29,7 +29,7 @@ if(process.env.NODE_ENV === 'production') {
 const port = process.env.PORT || 5000;
 
 mongoose
-  .connect('mongodb+srv://encant123:encant123@encantdb.cqhf2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
+  .connect('mongodb+srv://encant123:encant123@encantdb.cqhf2.mongodb.net/encantdb?retryWrites=true&w=majority')
   .then(result => {
     app.listen(port, () => console.log(`Server started on port ${port}`));
   })

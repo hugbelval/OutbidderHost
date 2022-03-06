@@ -54,10 +54,17 @@ router.post('/', async (req, res) =>{
         console.log('err', err);
       });
 });
+
 // Delete User
 router.delete('/:id', async (req, res) => {
-    User.deleteOne({_id: req.params.id});
-    res.status(200).send();
+    const id = req.params.id;
+    await User.deleteOne({_id: id})
+    .then(() => {
+        res.status(200).send();
+    })
+    .catch((err) => {
+        console.log('err', err);
+    });
 });
 /*
 // Changer en mongoose
