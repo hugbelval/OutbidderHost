@@ -1,6 +1,6 @@
 <!-- eslint-disable -->
 <template>
-  <div>
+  <div class="mt-5">
     <div class="text-center" v-show="!isShow">
       <SpinnerVue/>
     </div>

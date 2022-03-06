@@ -2,7 +2,7 @@
 <template>
   <div>
     <div class="lds-dual-ring"></div>
-    <h2 class="mt-3">Loading the bid...</h2>
+    <h2 class="mt-3">Loading...</h2>
   </div>
 </template>
 
