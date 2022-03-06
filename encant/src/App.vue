@@ -6,7 +6,7 @@
     <router-link to="/user">Information on user</router-link> |
     <router-link to="/">Bids</router-link>
   </nav>
-  <router-view class="container text-center"/>
+  <router-view class="container"/>
   <FooterVue class="mt-5"/>
 </template>
 <script>/* eslint-disable */ 
