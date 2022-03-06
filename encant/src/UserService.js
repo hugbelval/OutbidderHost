@@ -20,10 +20,8 @@ class UserService {
     }
 
     // Create User
-    static insertUser(name) {
-        return axios.post(url, {
-            name
-        });
+    static insertUser(user) {
+        return axios.post(url, user);
     }
 
     // Delete user

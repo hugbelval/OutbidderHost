@@ -11,7 +11,7 @@
     <ul>
       <li class="user" v-for="(user, index) in users" v-bind:item="user"
       v-bind:index="index" v-bind:key="user._id">
-        <p class="text">{{ user.name }}</p>
+        <p class="text">{{ user.username }}</p>
         <button v-on:click="deleteUser(user._id)">Supprimer</button>
       </li>
     </ul>
@@ -40,7 +40,15 @@ export default {
     async createUser() {
       console.log("createUser")
       this.green = 'green'
-      await UserService.insertUser(this.name);
+      await UserService.insertUser(
+        {
+          username: this.name,
+          lastname: "Guy",
+          firstname: "Le beau Guy",
+          email: "guyguy",
+          password: "jaimeguy",
+          phone: "4188888888",
+        });
       this.users = await UserService.getUsers();
     },
     async deleteUser(id) {

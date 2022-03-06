@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const mongoose = require('mongoose')
 
 const app = express();
 
@@ -27,4 +28,9 @@ if(process.env.NODE_ENV === 'production') {
 
 const port = process.env.PORT || 5000;
 
-app.listen(port, () => console.log(`Server started on port ${port}`));
+mongoose
+  .connect('mongodb+srv://encant123:encant123@encantdb.cqhf2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
+  .then(result => {
+    app.listen(port, () => console.log(`Server started on port ${port}`));
+  })
+  .catch(err => console.log(err));
