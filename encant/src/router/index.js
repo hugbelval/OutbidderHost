@@ -4,6 +4,7 @@ import BidsView from '../views/Bids.vue';
 import VueAuthentif from '../views/Authentification.vue'
 import VueConnexion from "../views/Connexion.vue"
 import BidVue from '@/views/Bid.vue';
+import BidCreate from '@/views/CreateBid.vue'
 
 const routes = [
   {
@@ -33,6 +34,11 @@ const routes = [
     path: '/:id',
     name: "Bid",
     component: BidVue
+  },
+  {
+    path: '/create',
+    name: "BidCreate",
+    component: BidCreate
   }
 ];
 

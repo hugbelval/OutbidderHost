@@ -10,10 +10,14 @@ router.get('/', async (req, res) => {
 });
 
 // Add Post
+//TODO: Une image
 router.post('/', async (req, res) =>{
     const posts = await loadPostsCollection();
     await posts.insertOne({
-        text: req.body.text,
+        name: req.body.name,
+        endAt: req.body.endAt,
+        startBid: req.body.startBid,
+        desc: req.body.desc,
         createdAt: new Date()
     });
     res.status(201).send();

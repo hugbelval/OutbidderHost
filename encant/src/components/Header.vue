@@ -4,7 +4,8 @@
         <div class="d-flex justify-content-around">
             <img src="@/assets/logo.png" id="logo">
             <nav>
-                <!-- Lien vers les autres pages-->
+                <router-link to="/user">Information on user</router-link> |
+                 <router-link to="/">Bids</router-link>
             </nav>
         </div>
     </header>
@@ -17,5 +18,9 @@ export default{
 <style scoped>
 #logo{
     width: 15%;
+}
+
+header{
+    background-color: rgb(34, 30, 30);
 }
 </style>

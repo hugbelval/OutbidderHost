@@ -34,6 +34,16 @@ class PostService {
             }
         });
     }
+
+    // Ajouter une image
+    static insertBidObject(name, endAt, startBid, desc) {
+        return axios.post(url, {
+            name,
+            endAt,
+            startBid,
+            desc
+        });
+    }
 }
 
 export default PostService;
