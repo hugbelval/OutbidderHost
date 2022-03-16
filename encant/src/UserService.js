@@ -13,15 +13,36 @@ class UserService {
                 const data = res.data;
                 resolve(data);
             } catch(err){
-                console.log("Error promise chiée")
+                console.log("Erreur promesse")
                 reject(err);
             }
         });
     }
 
     // Create User
-    static insertUser(user) {
-        return axios.post(url, user);
+    static signin(user) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                await axios.post(`${url}signup`, user);
+                this.login(user);
+            } catch(err){
+                console.log("Erreur creation");
+                reject(err);
+            }
+        });
+    }
+
+    static login(user) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const res = axios.post(`${url}login`, user);
+                const token = res.token;
+                resolve(token);
+            } catch(err){
+                console.log("Erreur connexion");
+                reject(err);
+            }
+        });
     }
 
     // Delete user

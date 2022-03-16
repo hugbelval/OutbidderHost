@@ -11,7 +11,6 @@ const jwt = require('jsonwebtoken');
 // Get Users
 router.get('/', async (req, res) => {
     //decodedToken = jwt.verify(token, process.env.SECRET_JWT);
-    
     User.find()
     .then(posts => {
         res.send(posts);
