@@ -1,44 +1,43 @@
 <!-- eslint-disable -->
 <template>
   <div class="mt-5">
-    <div class="text-center" v-show="!isShow">
+    <div class="text-center">
       <SpinnerVue/>
     </div>
-    <div v-show="isShow">
+    <div>
       <div class="rounded-top nameBid">
-        <h2>{{ bid.name }}</h2>
+        <h2>{{ object.name }}</h2>
       </div>
       <div class="bidColor rounded-bottom p-5">
-        <h3>The starting bid : {{ bid.startBid }}</h3>
-        <h3 class="mt-5">Description : {{ bid.desc }}</h3>
+        <h3 class="mt-5">Description : {{ object.description }}</h3>
       </div>
     </div>
   </div>
 </template>
 <script>
 /* eslint-disable */
-import PostService from "@/PostService";
+import ObjectService from "@/ObjectService";
 import SpinnerVue from "@/components/Spinner.vue";
+import $ from "jquery"
 
 export default {
-  name: "BidVue",
+  name: "VueObject",
   components:{
     SpinnerVue:SpinnerVue
   },
   data() {
     return {
-      bid: {},
-      error: "",
-      isShow: false
+      object: {},
+      error: ""
     };
   },
   async created() {
     try {
-      this.bid = await PostService.getBid(this.$route.params.id);
+      this.object = await ObjectService.getObject(this.$route.params.objectId);
     } catch (err) {
       this.error = err.message;
     }
-    this.isShow = true;
+    $("#spinner").remove();
   }
 };
 </script>

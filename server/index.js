@@ -11,17 +11,16 @@ app.use(cors());
 
 //app.use(express.static(path.join(__dirname, 'public')));
 
-const posts = require('./routes/api/posts');
+const objects = require('./routes/api/objects');
 const users = require('./routes/api/users');
 
 app.use('/users', users);
-app.use('/encant', posts);
+app.use('/encant', objects);
 
 // Handle production
 if(process.env.NODE_ENV === 'production') {
     // Static folder
     app.use(express.static(__dirname + '/public/'))
-
     // Handle SPA
     app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'));
 }
