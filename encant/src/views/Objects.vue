@@ -71,16 +71,16 @@ export default {
       return `${monthNames[parseInt(date[1])]} ${date[2]} ${date[0]} à ${moment[1].split(".")[0]}`
     },
     async Reload() {
-      if ($("#confirmationContainer").is(':empty')) {
-        $("#confirmationContainer").empty()
+      const confirm = $("#confirmationContainer");
+      if (confirm.is(':empty')) {
         const confirmation = $(`<div class="alert alert-success d-flex align-items-center" role="alert">
         <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
         <div>Page rechargée avec succès</div> </div>`)
-        $("#confirmationContainer").append(confirmation)
+        confirm.append(confirmation)
         this.LoadData(await ObjectService.getObjects())
         setTimeout(function () {
-          $("#confirmationContainer").empty()
-          $("#confirmationContainer").css("display", "")
+          confirm.empty()
+          confirm.css("display", "")
         }, 2000)
       } else {
         this.LoadData(await ObjectService.getObjects());
