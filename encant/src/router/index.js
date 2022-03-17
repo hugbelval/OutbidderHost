@@ -1,10 +1,10 @@
 /* eslint-disable */ 
 import { createRouter, createWebHistory } from 'vue-router';
-import BidsView from '../views/Bids.vue';
+import VueObjects from '../views/Objects.vue';
 import VueAuthentif from '../views/Authentification.vue'
 import VueConnexion from "../views/Connexion.vue"
-import BidVue from '@/views/Bid.vue';
-import BidCreate from '@/views/CreateBid.vue'
+import VueObject from '@/views/Object.vue';
+import VueCreateObject from '@/views/CreateObject.vue'
 
 const routes = [
   {
@@ -22,8 +22,8 @@ const routes = [
   },
   {
     path: '/',
-    name: "Bids",
-    component: BidsView
+    name: "Objects",
+    component: VueObjects
   },
   {
     path: '/connection',
@@ -31,14 +31,14 @@ const routes = [
     component: VueConnexion
   },
   {
-    path: '/:id',
-    name: "Bid",
-    component: BidVue
+    path: '/:objectId',
+    name: "Object",
+    component: VueObject
   },
   {
     path: '/create',
-    name: "BidCreate",
-    component: BidCreate
+    name: "CreateObject",
+    component: VueCreateObject
   }
 ];
 
