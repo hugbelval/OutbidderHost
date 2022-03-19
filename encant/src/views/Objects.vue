@@ -14,8 +14,7 @@
 
     <div id="confirmationContainer" class="mb-5"></div>
     <div>
-      <div class="mb-4 d-flex justify-content-between">
-        <router-link class="btn-primary btn" to="/create">Ajouter un item</router-link>
+      <div class="mb-4">
         <button class="btn reload" v-on:click="Reload">
           <strong>
             Recharger les items
@@ -86,7 +85,7 @@ export default {
         this.LoadData(await ObjectService.getObjects());
       }
     },
-    async LoadData(data) {
+    LoadData(data) {
       const objectsList = $("#objectsList");
       objectsList.empty();
       data.forEach(objectData => {
@@ -100,7 +99,7 @@ export default {
         bottomObject.append(`<p class="text-light mb-4"><strong>Mise actuelle :</strong> ${this.Currency(objectData.currentBid)}</p>`)
         bottomObject.append(`<p class="text-light mb-4"><strong>Date de fin : </strong>${this.SetTime(objectData.endDate)}</p>`)
         bottomObject.append(`<div class="text-center">
-                <img class="mb-4" src="img/${objectData.image}" alt="Image de l'item"></div>`)
+                <img class="mb-4 text-white w-100" src="img/${objectData.image}" alt="Image de l'item"></div>`)
         bottomObject.append(`<a href="${objectData._id}" class="btn w-100 p-2 btnChange">Miser</a>`)
         object.append(bottomObject);
 

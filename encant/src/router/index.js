@@ -4,7 +4,7 @@ import VueObjects from '../views/Objects.vue';
 import VueAuthentif from '../views/Authentification.vue'
 import VueConnexion from "../views/Connexion.vue"
 import VueObject from '@/views/Object.vue';
-import VueCreateObject from '@/views/CreateObject.vue'
+import VueAddObject from '@/views/FormAdd.vue'
 
 const routes = [
   {
@@ -36,10 +36,10 @@ const routes = [
     component: VueObject
   },
   {
-    path: '/create',
-    name: "CreateObject",
-    component: VueCreateObject
-  }
+    path: '/ajouter',
+    name: "FormAdd",
+    component: VueAddObject
+  },
 ];
 
 const router = createRouter({
