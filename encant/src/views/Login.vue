@@ -27,6 +27,7 @@
 <script>/* eslint-disable */ 
 import UserService from "../UserService"
 import router from '../router'
+import $ from "jquery"
 
 export default {
     name: "VueLogin",
@@ -38,31 +39,64 @@ export default {
     },
     methods: {
     async login(){
-            console.log("logged");
-            UserService.login(
-            {
-                email: this.email,
-                password: this.password,
-            })
-            .then(res => {
-                console.log("then")
-                console.log(res);
-                if(res.status == 200){
-                    console.log("code 200")
-                    console.log(localStorage.getItem("user-token"))
-                    router.push("/");
-                }
-                //Messages erreur
-                else{
-                    this.email = res.data.userdata.email;
-                }
-            })
+            for (let i = 1; i < 3; i++) {
+                $(`#error${i}`).remove()
+            }
+            const email = $("#email").val().trim();
+            const password = $("#password").val();
+            const errors = this.validate(email, password)
 
-            .catch(err => {
-                console.log("Erreur creation");
-                console.log(err);
-            });
+            if (Object.keys(errors).length != 0) {
+                let i = 0;
+                for (const key of Object.keys(errors)) {
+                    i++;
+                    console.log("error in :" + key);
+                    $(`#${key}`).after($(`<p id=error${i} class="text-danger"><strong>${errors[key]}</strong></p>`))
+                }
+            } else {
+                console.log("logged");
+                UserService.login(
+                {
+                    email: this.email,
+                    password: this.password,
+                })
+                .then(res => {
+                    console.log("then")
+                    console.log(res);
+                    if(res.status == 200){
+                        console.log("code 200")
+                        console.log(localStorage.getItem("user-token"))
+                        router.push("/");
+                    }
+                    //Messages erreur
+                    else{
+                        this.email = res.data.userdata.email;
+                        
+                    }
+                })
+                .catch(err => {
+                    console.log("Erreur creation");
+                    console.log(err);
+                });
+            }
         },
+        validate(email, password) {
+            const errors = {}
+            const regexEmail = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/
+            if(email == ""){
+                errors["email"] = "L'email ne peut pas être vide"
+            }
+            if (!regexEmail.test(email)) {
+                errors["email"] = "L'email est invalide"
+            }
+            const regexPwd = /^[a-zA-Z0-9_]*$/
+            if(password.length < 8 || password.length > 40){
+                errors["password"] = "Le mot de passe doit contenir entre 8 et 40 caractères"
+            } else if(!regexPwd.test(password)){
+                errors["password"] = "Le mot de passe doit être alphanumérique"
+            }
+            return errors;
+        }
     },
     watch: {
         name: function(){
