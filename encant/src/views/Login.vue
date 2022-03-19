@@ -39,21 +39,10 @@ export default {
     },
     methods: {
     async login(){
-            for (let i = 1; i < 3; i++) {
-                $(`#error${i}`).remove()
-            }
             const email = $("#email").val().trim();
             const password = $("#password").val();
-            const errors = this.validate(email, password)
-
-            if (Object.keys(errors).length != 0) {
-                let i = 0;
-                for (const key of Object.keys(errors)) {
-                    i++;
-                    console.log("error in :" + key);
-                    $(`#${key}`).after($(`<p id=error${i} class="text-danger"><strong>${errors[key]}</strong></p>`))
-                }
-            } else {
+            
+            if(true) {
                 console.log("logged");
                 UserService.login(
                 {
@@ -71,7 +60,7 @@ export default {
                     //Messages erreur
                     else{
                         this.email = res.data.userdata.email;
-                        
+                        $(`#password`).after($(`<p id=error1 class="text-danger"><strong>${res.data.message}</strong></p>`))
                     }
                 })
                 .catch(err => {
@@ -80,30 +69,7 @@ export default {
                 });
             }
         },
-        validate(email, password) {
-            const errors = {}
-            const regexEmail = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/
-            if(email == ""){
-                errors["email"] = "L'email ne peut pas être vide"
-            }
-            if (!regexEmail.test(email)) {
-                errors["email"] = "L'email est invalide"
-            }
-            const regexPwd = /^[a-zA-Z0-9_]*$/
-            if(password.length < 8 || password.length > 40){
-                errors["password"] = "Le mot de passe doit contenir entre 8 et 40 caractères"
-            } else if(!regexPwd.test(password)){
-                errors["password"] = "Le mot de passe doit être alphanumérique"
-            }
-            return errors;
-        }
     },
-    watch: {
-        name: function(){
-            /* Validation du nom */
-            console.log("allo")
-        }
-    }
 }
 </script>
 <style lang="scss">

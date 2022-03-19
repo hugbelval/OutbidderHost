@@ -66,6 +66,7 @@ export default {
         },
 
         async signup(){
+            
             for (let i = 1; i < 6; i++) {
                 $(`#error${i}`).remove()
             }
@@ -74,7 +75,6 @@ export default {
             const firstname = $("#firstname").val().trim();
             const lastname = $("#lastname").val().trim();
             const phone = $("#phone").val().trim();
-
             const errors = this.validate(email, password, firstname, lastname, phone)
 
             if (Object.keys(errors).length != 0) {
@@ -84,7 +84,7 @@ export default {
                     console.log("error in :" + key);
                     $(`#${key}`).after($(`<p id=error${i} class="text-danger"><strong>${errors[key]}</strong></p>`))
                 }
-            } else {
+            } else{
                 console.log("logged");
                 UserService.signup(
                 {
@@ -96,7 +96,6 @@ export default {
                 })
                 .then(res => {
                     console.log("then")
-                    console.log(res);
                     if(res.status == 200){
                         console.log("code 200")
                         console.log(localStorage.getItem("user-token"))
@@ -104,15 +103,22 @@ export default {
                     }
                     //Messages erreur
                     else{
+                        console.log("error" + res.status)
                         this.email = res.data.userdata.email;
                         this.firstname = res.data.userdata.firstname;
                         this.lastname = res.data.userdata.lastname;
                         this.phone = res.data.userdata.phone;
-
+                        let i = 0;
+                        console.log("errors %j", res.data.errors)
+                        for (const key of Object.keys(res.data.errors)) {
+                            i++;
+                            console.log("error in :" + key);
+                            $(`#${key}`).after($(`<p id=error${i} class="text-danger"><strong>${res.data.errors[key].msg}</strong></p>`))
+                         }
                     }
                 })
                 .catch(err => {
-                    console.log("Erreur creation");
+                    console.log("Erreur creation Frontend");
                     console.log(err);
                 });
                 //Verify token
@@ -134,7 +140,7 @@ export default {
                 errors["password"] = "Le mot de passe doit être alphanumérique"
             }
 
-            const regexNom = /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ'-. ]*$/
+            const regexNom = /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ.,'!&]*$/
             if(firstname == ""){
                 errors["firstname"] = "Le prénom ne peut pas être vide"
             } 
@@ -153,8 +159,8 @@ export default {
                 errors["lastname"] = "Le nom doit être alphanumérique"
             }
             const regexPhone = /^[0-9]*$/
-            if(phone.length != 11 || !regexPhone(phone)){
-                errors["phone"] = "Le numéro de téléphone doit composer 11 chiffres. Ex: 1112223333"
+            if(phone.length != 10 || !regexPhone.test(phone)){
+                errors["phone"] = "Le numéro de téléphone doit composer 10 chiffres. Ex: 1112223333"
             }
             return errors;
         }

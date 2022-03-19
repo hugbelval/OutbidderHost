@@ -29,12 +29,20 @@ exports.createPost = (req, res, next) => {
 
 // Add User
 router.post('/signup',
-body('email').isEmail().withMessage("est non valide").custom(value => {
-    return User.find({email:value}).then(user => {
+body('email').isLength({min:1}).withMessage("L'email est requis").isEmail().withMessage("L'email est non valide").custom(value => {
+    return User.findOne({email:value}).then(user => {
       if (user) {
-        return Promise.reject('E-mail already in use');
+          console.log(user)
+        return Promise.reject('Email déja utilisé');
       }
     });}),
+ body('password').isLength({min: 8, max: 40}).withMessage("Le mot de passe doit contenir de 8 à 40 caractères")
+.isAlpha().withMessage("Le mot de passe doit contenir seulement lettres et chiffres"),
+body('firstname').isLength({min:1}).withMessage("Le prénom est requis").isLength({max:40}).withMessage("Le prénom doit contenir moins de 40 caractères")
+.matches(/^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ.,'!&]*$/).withMessage("Le prénom doit être alphanumérique"),
+body('lastname').isLength({min:1}).withMessage("Le nom est requis").isLength({max:40}).withMessage("Le nom doit contenir moins de 40 caractères")
+.matches(/^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ.,'!&]*$/).withMessage("Le nom doit être alphanumérique"),
+body('phone').isLength({min:10, max:10}).withMessage("Le téléphone doit contenir 10 chiffres").matches(/^[0-9]*$/).withMessage("Le téléphone doit contenir seulement des chiffres"),
 async (req, res, next) =>{
     console.log("Body: %j", req.body);
     const email = req.body.email;
@@ -43,6 +51,10 @@ async (req, res, next) =>{
     const lastname = req.body.lastname;
     const phone = req.body.phone;
     
+    const errors = validationResult(req).mapped();
+    if(!Object.keys(errors).length === 0){
+        return res.status(400).json({errors: errors, userdata:req.body});
+    }
     console.log("Body ok");
     bcrypt
     .hash(password, 12)
@@ -70,25 +82,19 @@ async (req, res, next) =>{
     })
 });
 
-router.post('/login',
-body('email').isEmail().withMessage("est non valide"),
-body('password').isLength({min: 8, max: 40}).withMessage("doit contenir de 8 à 40 caractères")
-.isAlpha().withMessage("doit contenir seulement lettres et chiffres"),  async (req, res, next) => {
+router.post('/login',  async (req, res, next) => {
     console.log("Body: %j", req.body);
     const email = req.body.email;
     const password = req.body.password;
-    const errors = validationResult(req);
-    if(!errors.isEmpty()){
-        res.status(400).json({errors: errors.array(), userdata:req.body});
-    }
+    
     let loadedUser;
     User.findOne({email:email})
     .then(user => {
         console.log("Inside findone");
         if(!user) {
-            console.log("Not found");
-            const error = new Error('User not found');
-            error.statusCode = 404;
+            console.log("User Not found");
+            const error = new Error('La combinaison email/mot de passe est incorrecte');
+            error.statusCode = 401;
             throw error;
         }
         loadedUser = user;
@@ -97,7 +103,7 @@ body('password').isLength({min: 8, max: 40}).withMessage("doit contenir de 8 à 
     .then(isEqual => {
         if (!isEqual) {
             console.log("Wrong password");
-            const error = new Error('Wrong password');
+            const error = new Error('La combinaison email/mot de passe est incorrecte');
             error.statusCode = 401;
             throw error;
         }
