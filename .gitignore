@@ -1,2 +1,4 @@
+#Enlever encant/public lors du push sur heroku
+encant/public
 node_modules
-server/.env
+.env
