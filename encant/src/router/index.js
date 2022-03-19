@@ -31,14 +31,14 @@ const routes = [
     component: VueLogin
   },
   {
-    path: '/:id',
-    name: "Bid",
-    component: BidVue
+    path: '/:objectId',
+    name: "Object",
+    component: VueObject
   },
   {
     path: '/create',
-    name: "BidCreate",
-    component: BidCreate
+    name: "CreateObject",
+    component: VueCreateObject
   }
 ];
 
