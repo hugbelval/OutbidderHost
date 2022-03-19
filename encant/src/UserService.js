@@ -23,9 +23,7 @@ class UserService {
     static signup(user) {
         return axios.post(`${url}signup`, user)
             .then(res => {
-                console.log("Res qui sera envoyée au login: %j", user);
-                console.log("res.user:" + res.data.user);
-                return this.login(res.data.user);
+                return this.login(user);
             })
             .catch(err => {
                 console.log("Erreur creation");

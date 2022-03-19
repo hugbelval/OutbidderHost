@@ -54,6 +54,7 @@ router.post('/signup', async (req, res, next) =>{
         res.status(201).json({message: "Utilisateur créé !", user: user});
     })
     .catch(err => {
+        console.log("Catch serveur creation")
         if (!err.statusCode) {
             err.statusCode = 500;
         }

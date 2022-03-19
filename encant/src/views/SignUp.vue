@@ -74,9 +74,20 @@ export default {
                 phone: this.phone
             })
             .then(res => {
+                console.log("then")
                 console.log(res);
-                if(true){
+                if(res.status == 200){
+                    console.log("code 200")
+                    console.log(localStorage.getItem("user-token"))
                     router.push("/");
+                }
+                //Messages erreur
+                else{
+                    this.email = res.data.userdata.email;
+                    this.firstname = res.data.userdata.firstname;
+                    this.lastname = res.data.userdata.lastname;
+                    this.phone = res.data.userdata.phone;
+
                 }
             })
             .catch(err => {
