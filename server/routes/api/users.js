@@ -29,31 +29,35 @@ exports.createPost = (req, res, next) => {
 // Add User
 router.post('/signup', async (req, res, next) =>{
     console.log("Body: %j", req.body);
-    const username = req.body.username;
+    const email = req.body.email;
+    const password = req.body.password;
     const firstname = req.body.firstname;
     const lastname = req.body.lastname;
-    const password = req.body.password;
-    const email = req.body.email;
     const phone = req.body.phone;
-
+    
+    console.log("Body ok");
     bcrypt
     .hash(password, 12)
     .then((hashedPassword) => {
+        console.log("Creating user");
         const user = new User({
             email: email,
             password: hashedPassword,
-            username: username,
             firstname: firstname,
             lastname: lastname,
             phone: phone
         });
         return user.save();
     })
-    .then(result => {
-        res.status(201).json({message: "Utilisateur créé !", userId: result.id});
+    .then(user => {
+        console.log("user created");
+        res.status(201).json({message: "Utilisateur créé !", user: user});
     })
     .catch(err => {
-        next(err);
+        if (!err.statusCode) {
+            err.statusCode = 500;
+        }
+        res.status(err.statusCode).json({ message: err.message, statusCode: err.statusCode, userdata:req.body});
     })
 });
 
@@ -65,7 +69,9 @@ router.post('/login', async (req, res, next) =>{
     let loadedUser;
     User.findOne({email:email})
     .then(user => {
+        console.log("Inside findone");
         if(!user) {
+            console.log("Not found");
             const error = new Error('User not found');
             error.statusCode = 404;
             throw error;
@@ -75,6 +81,7 @@ router.post('/login', async (req, res, next) =>{
     })
     .then(isEqual => {
         if (!isEqual) {
+            console.log("Wrong password")
             const error = new Error('Wrong password');
             error.statusCode = 401;
             throw error;
@@ -94,8 +101,9 @@ router.post('/login', async (req, res, next) =>{
         );
         res.status(200).json({token:token});
     }).catch(err =>{
+        console.log("Server catch");
         if (!err.statusCode) err.statusCode = 500;
-        res.status(err.statusCode).json({ message: err.message, statusCode: err.statusCode });
+        res.status(err.statusCode).json({ message: err.message, statusCode: err.statusCode, userdata:req.body});
       });
 });
 
