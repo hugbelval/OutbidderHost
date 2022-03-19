@@ -1,16 +1,21 @@
 /* eslint-disable */ 
 import { createRouter, createWebHistory } from 'vue-router';
-import VueObjects from '../views/Objects.vue';
-import VueAuthentif from '../views/Authentification.vue'
-import VueConnexion from "../views/Connexion.vue"
-import VueObject from '@/views/Object.vue';
-import VueCreateObject from '@/views/CreateObject.vue'
+import BidsView from '../views/Bids.vue';
+import VueSignup from '../views/SignUp.vue';
+import VueLogin from "../views/Login.vue";
+import BidVue from '@/views/Bid.vue';
+import BidCreate from '@/views/CreateBid.vue'
 
 const routes = [
   {
-    path: '/authentification',
-    name: 'Authentification',
-    component: VueAuthentif
+    path: '/',
+    name: "Bids",
+    component: BidsView
+  },
+  {
+    path: '/signup',
+    name: 'Signup',
+    component: VueSignup
   },
   {
     path: '/user',
@@ -21,14 +26,9 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/User.vue'),
   },
   {
-    path: '/',
-    name: "Objects",
-    component: VueObjects
-  },
-  {
-    path: '/connection',
-    name: "Connection",
-    component: VueConnexion
+    path: '/login',
+    name: "Login",
+    component: VueLogin
   },
   {
     path: '/:objectId',
