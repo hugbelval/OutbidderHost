@@ -1,7 +1,11 @@
 const express = require('express');
 const Object = require('../../models/object');
 const multer = require("multer");
+const fs = require("fs");
+const { promisify } = require('util');
 let imageName;
+
+const unlinkAsync = promisify(fs.unlink)
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb){
@@ -42,6 +46,7 @@ router.get('/:objectId', async (req, res) => {
 })
 
 router.post('/ajouter',upload.single('objectImage'),async (req, res) => {
+    //await unlinkAsync(req.file.path)
     new Object ({
         name: req.body.name,
         startDate: req.body.startDate,

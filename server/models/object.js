@@ -19,7 +19,7 @@ const objectSchema = new Schema({
     },
     seller: {
         type: Schema.Types.ObjectId,
-        required: true
+        ref: 'User'
     },
     currentBid: {
         type: Number,
@@ -27,7 +27,8 @@ const objectSchema = new Schema({
     },
     mostRecentBidder: 
     {
-        type: Schema.Types.ObjectId
+        type: Schema.Types.ObjectId,
+        ref:'User'
     },
     image: {
         type: String,

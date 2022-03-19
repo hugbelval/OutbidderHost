@@ -96,7 +96,11 @@ export default {
         object.append(topObject);
 
         const bottomObject = $(`<div class="bottomObject rounded-bottom"></div>`)
-        bottomObject.append(`<p class="text-light mb-4"><strong>Mise actuelle :</strong> ${this.Currency(objectData.currentBid)}</p>`)
+        if (objectData.mostRecentBidder) {
+          bottomObject.append(`<p class="text-light mb-4"><strong>Mise actuelle :</strong> ${this.Currency(objectData.currentBid)}</p>`)
+        } else {
+          bottomObject.append(`<p class="text-light mb-4"><strong>Prix de départ :</strong> ${this.Currency(objectData.currentBid)}</p>`)
+        }
         bottomObject.append(`<p class="text-light mb-4"><strong>Date de fin : </strong>${this.SetTime(objectData.endDate)}</p>`)
         bottomObject.append(`<div class="text-center">
                 <img class="mb-4 text-white w-100" src="img/${objectData.image}" alt="Image de l'item"></div>`)

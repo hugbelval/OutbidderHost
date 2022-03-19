@@ -12,11 +12,11 @@
         <h1 class="mb-4">{{ title }}</h1>
         <form @submit="onSubmit" id="objectForm">
             <div id="divName" class="d-flex row">
-                <div class="form-group mb-4 w-70">
+                <div class="form-group mb-4 w-60">
                     <label for="name" class="mb-2">Nom de l'item</label>
                     <input type="text" class="form-control" id="name" placeholder="Ex: Auto" />
                 </div>
-                <div class="form-group mb-4 w-30">
+                <div class="form-group mb-4 w-40">
                     <label for="endDate" class="mb-2">Date de fin</label>
                     <input type="datetime-local" class="form-control" id="endDate" />
                 </div>
@@ -148,11 +148,11 @@ export default {
 }
 </script>
 <style lang="scss">
-.w-30 {
-    width: 30%;
+.w-40 {
+    width: 40%;
 }
-.w-70 {
-    width: 70%;
+.w-60 {
+    width: 60%;
 }
 h1 {
     font-family: "Kanit", sans-serif;

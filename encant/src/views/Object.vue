@@ -5,11 +5,19 @@
       <SpinnerVue/>
     </div>
     <div>
-      <div class="rounded-top nameBid">
-        <h2>{{ object.name }}</h2>
+      <div class="rounded-top topObject">
+        <h3 class="text objectName"><strong>{{object.name}}</strong></h3>
       </div>
-      <div class="bidColor rounded-bottom p-5">
-        <h3 class="mt-5">Description : {{ object.description }}</h3>
+      <div class="bottomObject rounded-bottom">
+        <h4 class="text-light mb-4 description"><strong>Description:</strong> {{object.description}}</h4>
+        <div v-if="object.mostRecentBidder">
+          <h4 class="text-light mb-4"><strong>Mise actuelle:</strong> {{this.Currency(object.currentBid)}}</h4>
+        </div>
+        <div v-else>
+          <h4 class="text-light mb-4"><strong>Prix de départ:</strong> {{this.Currency(object.currentBid)}}</h4>
+        </div>
+        <div class="text-center">
+                <img class="mb-4 text-white w-50" v-bind:src="objectImage" alt="Image de l'item"></div>
       </div>
     </div>
   </div>
@@ -28,27 +36,31 @@ export default {
   data() {
     return {
       object: {},
+      objectImage: "",
       error: ""
     };
   },
   async created() {
     try {
       this.object = await ObjectService.getObject(this.$route.params.objectId);
+      this.objectImage = `img/${this.object.image}`
     } catch (err) {
       this.error = err.message;
     }
     $("#spinner").remove();
+  },
+  methods: {
+    Currency(currentBid) {
+      return new Intl.NumberFormat('en-CA', {
+        style: 'currency',
+        currency: 'CAD'
+      }).format(currentBid)
+    },
   }
 };
 </script>
 <style scoped lang="scss">
-.nameBid {
-  padding: 25px 0 25px 35px;
-  background-color: rgb(202, 196, 196);
-  color: black;
+.description{
+  word-wrap: break-word;
 }
-.bidColor{
-  background-color: rgb(231, 182, 182);
-}
-
 </style>
