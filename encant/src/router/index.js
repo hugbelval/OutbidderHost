@@ -1,16 +1,16 @@
 /* eslint-disable */ 
 import { createRouter, createWebHistory } from 'vue-router';
-import BidsView from '../views/Bids.vue';
+import VueObjects from '../views/Objects.vue';
 import VueSignup from '../views/SignUp.vue';
 import VueLogin from "../views/Login.vue";
-import BidVue from '@/views/Bid.vue';
-import BidCreate from '@/views/CreateBid.vue'
+import VueObject from '@/views/Object.vue';
+import VueAddObject from '@/views/FormAdd.vue'
 
 const routes = [
   {
     path: '/',
-    name: "Bids",
-    component: BidsView
+    name: "Objects",
+    component: VueObjects
   },
   {
     path: '/signup',
@@ -36,9 +36,9 @@ const routes = [
     component: VueObject
   },
   {
-    path: '/create',
-    name: "CreateObject",
-    component: VueCreateObject
+    path: '/ajouter',
+    name: "FormAdd",
+    component: VueAddObject
   }
 ];
 
