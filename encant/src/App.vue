@@ -2,7 +2,7 @@
 <template>
   <HeaderVue />
   <router-view class="container"/>
-  <FooterVue class="mt-5"/>
+  <FooterVue class="mt-5 pb-3"/>
 </template>
 <script>/* eslint-disable */ 
 import HeaderVue from "./components/Header.vue";

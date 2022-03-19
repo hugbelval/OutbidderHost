@@ -27,8 +27,7 @@ const objectSchema = new Schema({
     },
     mostRecentBidder: 
     {
-        type: Schema.Types.ObjectId,
-        required: true
+        type: Schema.Types.ObjectId
     },
     image: {
         type: String,
