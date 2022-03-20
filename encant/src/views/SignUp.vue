@@ -22,7 +22,7 @@
             </div>
             <div class="form-group mt-4">
                 <label for="formGroupExampleInput">Téléphone:</label>
-                <input v-model="phone" type="text" class="form-control" id="phone" placeholder="Ex: xxx-xxx-xxxx">
+                <input v-model="phone" type="text" class="form-control" id="phone" placeholder="Seulement les chiffres Ex: 1112223333">
             </div>
 
             <div class="row mt-5 text-center">
@@ -40,6 +40,8 @@
 <script>/* eslint-disable */ 
 import UserService from "../UserService";
 import router from '../router';
+import $ from "jquery"
+
 export default {
     name: "VueSignup",
     data(){
@@ -64,38 +66,104 @@ export default {
         },
 
         async signup(){
-            console.log("logged");
-            UserService.signup(
-            {
-                email: this.email,
-                password: this.password,
-                firstname: this.firstname,
-                lastname: this.lastname,
-                phone: this.phone
-            })
-            .then(res => {
-                console.log("then")
-                console.log(res);
-                if(res.status == 200){
-                    console.log("code 200")
-                    console.log(localStorage.getItem("user-token"))
-                    router.push("/");
-                }
-                //Messages erreur
-                else{
-                    this.email = res.data.userdata.email;
-                    this.firstname = res.data.userdata.firstname;
-                    this.lastname = res.data.userdata.lastname;
-                    this.phone = res.data.userdata.phone;
+            
+            for (let i = 1; i < 6; i++) {
+                $(`#error${i}`).remove()
+            }
+            const email = $("#email").val().trim();
+            const password = $("#password").val().trim();
+            const firstname = $("#firstname").val().trim();
+            const lastname = $("#lastname").val().trim();
+            const phone = $("#phone").val().trim();
+            const errors = this.validate(email, password, firstname, lastname, phone)
 
+            if (Object.keys(errors).length != 0) {
+                let i = 0;
+                for (const key of Object.keys(errors)) {
+                    i++;
+                    console.log("error in :" + key);
+                    $(`#${key}`).after($(`<p id=error${i} class="text-danger"><strong>${errors[key]}</strong></p>`))
                 }
-            })
-            .catch(err => {
-                console.log("Erreur creation");
-                console.log(err);
-            });
-            //Verify token
+            } else{
+                console.log("logged");
+                UserService.signup(
+                {
+                    email: this.email,
+                    password: this.password,
+                    firstname: this.firstname,
+                    lastname: this.lastname,
+                    phone: this.phone
+                })
+                .then(res => {
+                    console.log("then")
+                    if(res.status == 200){
+                        console.log("code 200")
+                        console.log(localStorage.getItem("user-token"))
+                        router.push("/");
+                    }
+                    //Messages erreur
+                    else{
+                        console.log("error" + res.status)
+                        this.email = res.data.userdata.email;
+                        this.firstname = res.data.userdata.firstname;
+                        this.lastname = res.data.userdata.lastname;
+                        this.phone = res.data.userdata.phone;
+                        let i = 0;
+                        console.log("errors %j", res.data.errors)
+                        for (const key of Object.keys(res.data.errors)) {
+                            i++;
+                            console.log("error in :" + key);
+                            $(`#${key}`).after($(`<p id=error${i} class="text-danger"><strong>${res.data.errors[key].msg}</strong></p>`))
+                         }
+                    }
+                })
+                .catch(err => {
+                    console.log("Erreur creation Frontend");
+                    console.log(err);
+                });
+                //Verify token
+            }
         },
+        validate(email, password, firstname, lastname, phone) {
+            const errors = {}
+            const regexEmail = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/
+            if(email == ""){
+                errors["email"] = "L'email ne peut pas être vide"
+            }
+            else if (!regexEmail.test(email)) {
+                errors["email"] = "L'email est invalide"
+            }
+            const regexPwd = /^[a-zA-Z0-9]*$/
+            if(password.length < 8 || password.length > 40){
+                errors["password"] = "Le mot de passe doit contenir entre 8 et 40 caractères"
+            } else if(!regexPwd.test(password)){
+                errors["password"] = "Le mot de passe doit être alphanumérique"
+            }
+
+            const regexNom = /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ.,'!&]*$/
+            if(firstname == ""){
+                errors["firstname"] = "Le prénom ne peut pas être vide"
+            } 
+            else if(firstname.length < 1 || firstname.length > 40){
+                errors["firstname"] = "Le prénom doit contenir entre 1 et 40 caractères"
+            } else if(!regexNom.test(firstname)){
+                errors["firstname"] = "Le prénom doit être alphanumérique"
+            }
+
+            if(lastname == ""){
+                errors["lastname"] = "Le nom ne peut pas être vide"
+            } 
+            else if(lastname.length < 1 || lastname.length > 40){
+                errors["lastname"] = "Le nom doit contenir entre 1 et 40 caractères"
+            } else if(!regexNom.test(lastname)){
+                errors["lastname"] = "Le nom doit être alphanumérique"
+            }
+            const regexPhone = /^[0-9]*$/
+            if(phone.length != 10 || !regexPhone.test(phone)){
+                errors["phone"] = "Le numéro de téléphone doit composer 10 chiffres. Ex: 1112223333"
+            }
+            return errors;
+        }
     },
 }
 </script>

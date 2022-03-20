@@ -27,6 +27,7 @@
 <script>/* eslint-disable */ 
 import UserService from "../UserService"
 import router from '../router'
+import $ from "jquery"
 
 export default {
     name: "VueLogin",
@@ -38,38 +39,37 @@ export default {
     },
     methods: {
     async login(){
-            console.log("logged");
-            UserService.login(
-            {
-                email: this.email,
-                password: this.password,
-            })
-            .then(res => {
-                console.log("then")
-                console.log(res);
-                if(res.status == 200){
-                    console.log("code 200")
-                    console.log(localStorage.getItem("user-token"))
-                    router.push("/");
-                }
-                //Messages erreur
-                else{
-                    this.email = res.data.userdata.email;
-                }
-            })
-
-            .catch(err => {
-                console.log("Erreur creation");
-                console.log(err);
-            });
+            const email = $("#email").val().trim();
+            const password = $("#password").val();
+            
+            if(true) {
+                console.log("logged");
+                UserService.login(
+                {
+                    email: this.email,
+                    password: this.password,
+                })
+                .then(res => {
+                    console.log("then")
+                    console.log(res);
+                    if(res.status == 200){
+                        console.log("code 200")
+                        console.log(localStorage.getItem("user-token"))
+                        router.push("/");
+                    }
+                    //Messages erreur
+                    else{
+                        this.email = res.data.userdata.email;
+                        $(`#password`).after($(`<p id=error1 class="text-danger"><strong>${res.data.message}</strong></p>`))
+                    }
+                })
+                .catch(err => {
+                    console.log("Erreur creation");
+                    console.log(err);
+                });
+            }
         },
     },
-    watch: {
-        name: function(){
-            /* Validation du nom */
-            console.log("allo")
-        }
-    }
 }
 </script>
 <style lang="scss">
