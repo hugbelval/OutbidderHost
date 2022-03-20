@@ -103,7 +103,7 @@ export default {
         }
         bottomObject.append(`<p class="text-light mb-4"><strong>Date de fin : </strong>${this.SetTime(objectData.endDate)}</p>`)
         bottomObject.append(`<div class="text-center">
-                <img class="mb-4 text-white w-100" src="img/${objectData.image}" alt="Image de l'item"></div>`)
+                <img class="mb-4 text-white w-100 imgBackground" src="img/${objectData.image}" alt="Image de l'item"></div>`)
         bottomObject.append(`<a href="${objectData._id}" class="btn w-100 p-2 btnChange">Miser</a>`)
         object.append(bottomObject);
 
@@ -151,5 +151,8 @@ export default {
 .reload:hover {
   background-color: rgb(50, 190, 22);
   color: rgb(37, 37, 37);
+}
+.imgBackground{
+    box-shadow: 0px 0px 5px red;
 }
 </style>
