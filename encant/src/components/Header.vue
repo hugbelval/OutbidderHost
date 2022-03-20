@@ -5,7 +5,7 @@
             <img src="@/assets/logo.png" id="logo" />
             <nav>
                 <router-link to="/user">Information on user</router-link> |
-                <router-link to="/">Items</router-link> |
+                <router-link to="/objects">Items</router-link> |
                 <router-link to="/ajouter">Ajouter un item</router-link>
             </nav>
         </div>

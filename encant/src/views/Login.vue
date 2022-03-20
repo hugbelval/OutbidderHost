@@ -1,24 +1,24 @@
 <!-- eslint-disable -->
 <template>
-    <div class="w-25 container">
-        <div class="bg-warning p-5 rounded m-auto" id="box-form">
+    <div class="w-33 container py-5">
+        <div class="bg-warning m-5 p-5 rounded m-auto" id="box-form">
         <form>
             <h1 class="text-center">Connexion</h1>
             <div class="form-group mt-4">
                 <label for="formGroupExampleInput">Email:</label>
-                <input v-model="email" type="email" class="form-control" id="email" placeholder="Example input">
+                <input v-model="email" type="email" class="form-control" id="email">
             </div>
             <div class="form-group mt-4">
                 <label for="formGroupExampleInput2">Mot de passe:</label>
-                <input v-model="password" type="password" class="form-control" id="password" placeholder="Another input">
+                <input v-model="password" type="password" class="form-control" id="password">
             </div>
             <div class="row mt-5 text-center">
-                <div class="col-6">
-                    <router-link class="btn btn-primary" to="/signup">Inscription</router-link>
+                <div>
+                    <a v-on:click="login" class="btn btn-primary d-block">Se connecter</a>
                 </div>
-                <div class="col-6">
-                    <a v-on:click="login" class="btn btn-primary">Se connecter</a>
-                </div>
+            </div>
+            <div class="h6 pt-3 text-center">
+                     <p>Pas de compte? <router-link class="d-inline" to="/signup">Inscrivez-vous</router-link></p>
             </div>
         </form>
         </div>
@@ -27,6 +27,7 @@
 <script>/* eslint-disable */ 
 import UserService from "../UserService"
 import router from '../router'
+import $ from "jquery"
 
 export default {
     name: "VueLogin",
@@ -38,42 +39,49 @@ export default {
     },
     methods: {
     async login(){
-            console.log("logged");
-            UserService.login(
-            {
-                email: this.email,
-                password: this.password,
-            })
-            .then(res => {
-                console.log("then")
-                console.log(res);
-                if(res.status == 200){
-                    console.log("code 200")
-                    console.log(localStorage.getItem("user-token"))
-                    router.push("/");
-                }
-                //Messages erreur
-                else{
-                    this.email = res.data.userdata.email;
-                }
-            })
+            const email = $("#email").val().trim();
+            const password = $("#password").val();
+            
+            for (let i = 1; i < 3; i++) {
+                $(`#error${i}`).remove()
+            }
 
-            .catch(err => {
-                console.log("Erreur creation");
-                console.log(err);
-            });
+            if(true) {
+                console.log("logged");
+                UserService.login(
+                {
+                    email: this.email,
+                    password: this.password,
+                })
+                .then(res => {
+                    console.log("then")
+                    console.log(res);
+                    if(res.status == 200){
+                        console.log("code 200")
+                        console.log(localStorage.getItem("user-token"))
+                        router.push("/objects");
+                    }
+                    //Messages erreur
+                    else{
+                        this.email = res.data.userdata.email;
+                        $(`#password`).after($(`<p id=error1 class="text-danger"><strong>${res.data.message}</strong></p>`))
+                    }
+                })
+                .catch(err => {
+                    console.log("Erreur creation");
+                    console.log(err);
+                });
+            }
         },
     },
-    watch: {
-        name: function(){
-            /* Validation du nom */
-            console.log("allo")
-        }
-    }
 }
 </script>
 <style lang="scss">
 #box-form{
     box-shadow: 0 0 15px black;
+}
+
+.w-33{
+    width: 33.33%;
 }
 </style>

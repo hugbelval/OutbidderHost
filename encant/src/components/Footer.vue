@@ -1,7 +1,7 @@
 <!-- eslint-disable -->
 <template>
     <footer>
-        <div>
+        <div class="py-3 px-2">
             <h1>Made by Gabriel Morris / Hugo Bellemare</h1>
         </div>
     </footer>

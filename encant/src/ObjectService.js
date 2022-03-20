@@ -4,12 +4,21 @@ axios.defaults.baseURL = 'http://localhost:5000'
 const url = 'encant/';
 const FormData = require("form-data")
 
+function passJWT() {
+    const token = localStorage.getItem("user-token");
+    if(token){
+        return {headers: {"authorization" : `Bearer ${token}`}}
+    }
+    else{
+        return null;
+    }
+}
 
 class ObjectService {
     static getObjects() {
         return new Promise(async (resolve, reject) => {
             try {
-                const res = await axios.get(url);
+                const res = await axios.get(url, passJWT());
                 const data = res.data;
                 resolve(data);
             } catch(err){
@@ -20,6 +29,7 @@ class ObjectService {
 
     static postObject(object, objectImage){
         var formData = new FormData()
+        console.log(passJWT()); 
         formData.append("objectImage", objectImage, image.originalname);
         formData.append("name", object.name);
         formData.append("startDate", object.startDate);
@@ -27,13 +37,13 @@ class ObjectService {
         formData.append("description", object.description);
         formData.append("seller", object.seller);
         formData.append("currentBid", object.currentBid);
-        return axios.post(`${url}ajouter`, formData)
+        return axios.post(`${url}ajouter`, formData, passJWT(),)
     }
 
     static getObject(id) {
         return new Promise(async (resolve, reject) => {
             try {
-                const res = await axios.get(`${url}${id}`);
+                const res = await axios.get(`${url}${id}`, passJWT());
                 const data = res.data;
                 resolve(data);
             } catch(err){
@@ -49,7 +59,7 @@ class ObjectService {
             endAt,
             startBid,
             desc
-        });
+        }, passJWT());
     }
 }
 
