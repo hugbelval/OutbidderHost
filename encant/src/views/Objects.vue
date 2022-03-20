@@ -52,7 +52,7 @@ export default {
     SpinnerVue: SpinnerVue,
   },
   async created() {
-    this.LoadData(await ObjectService.getObjects());
+    this.LoadData(await ObjectService.getObjects())
     $("#spinner").remove();
   },
   methods: {

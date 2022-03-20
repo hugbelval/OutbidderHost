@@ -4,13 +4,20 @@ import VueObjects from '../views/Objects.vue';
 import VueSignup from '../views/SignUp.vue';
 import VueLogin from "../views/Login.vue";
 import VueObject from '@/views/Object.vue';
-import VueAddObject from '@/views/FormAdd.vue'
+import VueAddObject from '@/views/FormAdd.vue';
+import VueError from '@/views/Error.vue';
+
 
 const routes = [
   {
-    path: '/',
+    path: '/objects',
     name: "Objects",
     component: VueObjects
+  },
+  {
+    path: '/error',
+    name: "Error",
+    component: VueError
   },
   {
     path: '/signup',
@@ -18,15 +25,7 @@ const routes = [
     component: VueSignup
   },
   {
-    path: '/user',
-    name: 'User',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/User.vue'),
-  },
-  {
-    path: '/login',
+    path: '/',
     name: "Login",
     component: VueLogin
   },

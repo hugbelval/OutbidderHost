@@ -1,7 +1,7 @@
 <!-- eslint-disable -->
 <template>
-    <div class="w-25 container">
-        <div class="bg-warning p-5 rounded m-auto" id="box-form">
+    <div class="w-33 container py-5">
+        <div class="bg-warning mt-5 p-5 rounded m-auto" id="box-form">
         <form>
             <h1 class="text-center">Inscription</h1>
             <div class="form-group mt-4">
@@ -24,14 +24,13 @@
                 <label for="formGroupExampleInput">Téléphone:</label>
                 <input v-model="phone" type="text" class="form-control" id="phone" placeholder="Seulement les chiffres Ex: 1112223333">
             </div>
-
             <div class="row mt-5 text-center">
-                <div class="col-6">
-                    <router-link class="btn btn-primary" to="/login">Connexion</router-link>
+                <div>
+                    <a v-on:click="signup" class="btn btn-primary d-block">S'inscrire</a>
                 </div>
-                <div class="col-6">
-                    <a v-on:click="signup" class="btn btn-primary">S'inscrire</a>
-                </div>
+            </div>
+            <div class="h6 pt-3 text-center">
+                     <p>Vous avez déja un compte? <router-link class="d-inline" to="/">Connexion</router-link></p>
             </div>
         </form>
         </div>
@@ -99,7 +98,7 @@ export default {
                     if(res.status == 200){
                         console.log("code 200")
                         console.log(localStorage.getItem("user-token"))
-                        router.push("/");
+                        router.push("/objects");
                     }
                     //Messages erreur
                     else{
@@ -170,5 +169,8 @@ export default {
 <style lang="scss">
 #box-form{
     box-shadow: 0 0 15px black;
+}
+.w-33{
+    width: 33.33%;
 }
 </style>

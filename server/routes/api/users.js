@@ -10,6 +10,7 @@ const jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
 
 // Get Users
+/*
 router.get('/', async (req, res) => {
     //decodedToken = jwt.verify(token, process.env.SECRET_JWT);
     User.find()
@@ -22,10 +23,7 @@ router.get('/', async (req, res) => {
         }
     })
 });
-
-exports.createPost = (req, res, next) => {
-    
-}
+*/
 
 // Add User
 router.post('/signup',
@@ -128,7 +126,7 @@ router.post('/login',  async (req, res, next) => {
       });
 });
 
-
+/*
 // Delete User
 router.delete('/:id', async (req, res) => {
     const id = req.params.id;
@@ -140,17 +138,6 @@ router.delete('/:id', async (req, res) => {
         console.log('err', err);
     });
 });
-/*
-// Changer en mongoose
-async function loadUsersCollection(){
-    const client = await mongodb.MongoClient.connect
-    ('mongodb+srv://encant123:encant123@encantdb.cqhf2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
-        useNewUrlParser: true
-    })
-    return client.db('encantdb').collection('users');
-}
 */
 
 module.exports = router;
-
-// Aller voir jwt / authentification headers pour sécuriser l'api. Sinon utiliser session mais moins efficace

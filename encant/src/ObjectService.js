@@ -29,6 +29,7 @@ class ObjectService {
 
     static postObject(object, objectImage){
         var formData = new FormData()
+        console.log(passJWT()); 
         formData.append("objectImage", objectImage, image.originalname);
         formData.append("name", object.name);
         formData.append("startDate", object.startDate);
@@ -36,13 +37,12 @@ class ObjectService {
         formData.append("description", object.description);
         formData.append("seller", object.seller);
         formData.append("currentBid", object.currentBid);
-        return axios.post(`${url}ajouter`, passJWT(), formData)
+        return axios.post(`${url}ajouter`, formData, passJWT(),)
     }
 
     static getObject(id) {
         return new Promise(async (resolve, reject) => {
             try {
-      token = authHeader.substring(7, authHeader.length);
                 const res = await axios.get(`${url}${id}`, passJWT());
                 const data = res.data;
                 resolve(data);
