@@ -4,12 +4,21 @@ axios.defaults.baseURL = 'http://localhost:5000'
 const url = 'encant/';
 const FormData = require("form-data")
 
+function passJWT() {
+    const token = localStorage.getItem("user-token");
+    if(token){
+        return {headers: {"authorization" : `Bearer ${token}`}}
+    }
+    else{
+        return null;
+    }
+}
 
 class ObjectService {
     static getObjects() {
         return new Promise(async (resolve, reject) => {
             try {
-                const res = await axios.get(url);
+                const res = await axios.get(url, passJWT());
                 const data = res.data;
                 resolve(data);
             } catch(err){
@@ -27,13 +36,14 @@ class ObjectService {
         formData.append("description", object.description);
         formData.append("seller", object.seller);
         formData.append("currentBid", object.currentBid);
-        return axios.post(`${url}ajouter`, formData)
+        return axios.post(`${url}ajouter`, passJWT(), formData)
     }
 
     static getObject(id) {
         return new Promise(async (resolve, reject) => {
             try {
-                const res = await axios.get(`${url}${id}`);
+      token = authHeader.substring(7, authHeader.length);
+                const res = await axios.get(`${url}${id}`, passJWT());
                 const data = res.data;
                 resolve(data);
             } catch(err){
@@ -49,7 +59,7 @@ class ObjectService {
             endAt,
             startBid,
             desc
-        });
+        }, passJWT());
     }
 }
 

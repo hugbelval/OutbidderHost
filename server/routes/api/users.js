@@ -1,6 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
-dotenv.config();
+dotenv.config({ path: require('find-config')('.env') });
 // const mongodb = require('mongodb');
 const mongoose = require('mongoose');
 const router = express.Router();
@@ -97,7 +97,7 @@ router.post('/login', async (req, res, next) =>{
                 phone: loadedUser.phone,
                 userId: loadedUser._id.toString()
             },
-            `${process.env.JWT_SECRET_KEY}`,
+            `${process.env.SECRET_JWT}`,
             { expiresIn: '1h' }
         );
         res.status(200).json({token:token});
