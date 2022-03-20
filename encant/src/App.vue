@@ -2,7 +2,7 @@
 <template>
   <HeaderVue />
   <router-view class="container"/>
-  <FooterVue class="mt-5"/>
+  <FooterVue class="mt-5 pb-3"/>
 </template>
 <script>/* eslint-disable */ 
 import HeaderVue from "./components/Header.vue";
@@ -23,6 +23,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
+  background-color: rgb(206, 206, 182);
 }
 
 nav {

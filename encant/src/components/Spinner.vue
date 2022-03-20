@@ -1,8 +1,8 @@
 <!-- eslint-disable -->
 <template>
-  <div>
-    <div class="lds-dual-ring"></div>
-    <h2 class="mt-3">Loading...</h2>
+  <div id="spinner">
+    <div class="lds-dual-ring"/>
+    <h2 class="mt-3">Chargement...</h2>
   </div>
 </template>
 
