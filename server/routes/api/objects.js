@@ -5,6 +5,7 @@ let imageName;
 const { body, validationResult } = require('express-validator');
 const fs = require("fs");
 const { promisify } = require('util');
+const jwt = require('jsonwebtoken');
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb){
@@ -84,7 +85,7 @@ router.post('/ajouter',upload.single('objectImage'),
         startDate: req.body.startDate,
         endDate: req.body.endDate,
         description: req.body.description,
-        seller: req.body.seller,
+        seller: jwt.verify(req.headers["authorization"].split(" ")[1], process.env.SECRET_JWT).userId,
         currentBid: req.body.startBid,
         image: imageName
     })

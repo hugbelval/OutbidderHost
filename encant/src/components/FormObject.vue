@@ -110,8 +110,6 @@ export default {
                     startDate: new Date(),
                     endDate: new Date(endDate),
                     description: description,
-                    //Aller chercher l'identifiant de l'utilisateur
-                    seller: "6224e7247a86f2cf9e351dc7",
                     startBid: startBid,
                 }
                 await ObjectService.postObject(object, image)

@@ -38,7 +38,6 @@ class ObjectService {
         formData.append("startDate", object.startDate);
         formData.append("endDate", object.endDate);
         formData.append("description", object.description);
-        formData.append("seller", object.seller);
         formData.append("startBid", object.startBid);
         return axios.post(`${url}ajouter`, formData, passJWT())
         .catch(err => {
