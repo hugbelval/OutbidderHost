@@ -82,7 +82,6 @@ router.post('/ajouter',upload.single('objectImage'),
     }
     new ObjectUser ({
         name: req.body.name,
-        startDate: req.body.startDate,
         endDate: req.body.endDate,
         description: req.body.description,
         seller: jwt.verify(req.headers["authorization"].split(" ")[1], process.env.SECRET_JWT).userId,

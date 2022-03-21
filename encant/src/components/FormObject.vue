@@ -13,7 +13,7 @@
         <p class="text-danger">* obligatoire</p>
         <form @submit="onSubmit" id="objectForm">
             <div id="divName" class="d-flex row">
-                <div class="form-group mb-4 w-70">
+                <div class="form-group mb-4 w-60">
                     <label for="name" class="mb-2">
                         <span class="text-danger">
                             <strong>*</strong>
@@ -21,7 +21,7 @@
                     </label>
                     <input type="text" class="form-control" id="name" placeholder="Ex: Auto" />
                 </div>
-                <div class="form-group mb-4 w-30">
+                <div class="form-group mb-4 w-40">
                     <label for="endDate" class="mb-2">
                         <span class="text-danger">
                             <strong>*</strong>
@@ -92,7 +92,8 @@ export default {
             const description = $("#description").val().trim();
             const image = $("#objectImage")[0].files[0]
             const startBid = $("#startBid").val().trim();
-            const errors = this.validate(name, endDate, description, image, startBid)
+            //const errors = this.validate(name, endDate, description, image, startBid)
+            const errors = {}
             if (Object.keys(errors).length != 0) {
                 const div = $("<div id='errors' class='text-danger bg-black rounded p-3 mb-3'><h2>Champs erronés</h2></div>")
                 const ul = $(`<ul></ul>`)
@@ -107,7 +108,6 @@ export default {
             } else {
                 const object = {
                     name: name,
-                    startDate: new Date(),
                     endDate: new Date(endDate),
                     description: description,
                     startBid: startBid,
@@ -162,7 +162,8 @@ export default {
             } else if (!regexAlphaNum.test(description)) {
                 errors["description"] = "La description doit être alphanumérique."
             }
-
+            console.log(endDate)
+            console.log(new Date(endDate))
             if (endDate == "") {
                 errors["endDate"] = "Une date doit être sélectionnée."
             } else if (new Date(endDate) <= new Date()) {
@@ -182,11 +183,11 @@ export default {
 }
 </script>
 <style lang="scss">
-.w-30 {
-    width: 30%;
+.w-40 {
+    width: 40%;
 }
-.w-70 {
-    width: 70%;
+.w-60 {
+    width: 60%;
 }
 h1 {
     font-family: "Kanit", sans-serif;
