@@ -139,13 +139,13 @@ export default {
                 errors["password"] = "Le mot de passe doit être alphanumérique"
             }
 
-            const regexNom = /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ.,'!&]*$/
+            const regexName = /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ.,'!&]*$/
             if(firstname == ""){
                 errors["firstname"] = "Le prénom ne peut pas être vide"
             } 
             else if(firstname.length < 1 || firstname.length > 40){
                 errors["firstname"] = "Le prénom doit contenir entre 1 et 40 caractères"
-            } else if(!regexNom.test(firstname)){
+            } else if(!regexName.test(firstname)){
                 errors["firstname"] = "Le prénom doit être alphanumérique"
             }
 
@@ -154,7 +154,7 @@ export default {
             } 
             else if(lastname.length < 1 || lastname.length > 40){
                 errors["lastname"] = "Le nom doit contenir entre 1 et 40 caractères"
-            } else if(!regexNom.test(lastname)){
+            } else if(!regexName.test(lastname)){
                 errors["lastname"] = "Le nom doit être alphanumérique"
             }
             const regexPhone = /^[0-9]*$/

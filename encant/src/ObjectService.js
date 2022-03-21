@@ -29,15 +29,22 @@ class ObjectService {
 
     static postObject(object, objectImage){
         var formData = new FormData()
-        console.log(passJWT()); 
-        formData.append("objectImage", objectImage, image.originalname);
+        if (typeof objectImage != "undefined"){
+            formData.append("objectImage", objectImage, objectImage.originalname);
+        } else {
+            formData.append("objectImage", "unexistant")
+        }
         formData.append("name", object.name);
         formData.append("startDate", object.startDate);
         formData.append("endDate", object.endDate);
         formData.append("description", object.description);
         formData.append("seller", object.seller);
-        formData.append("currentBid", object.currentBid);
-        return axios.post(`${url}ajouter`, formData, passJWT(),)
+        formData.append("startBid", object.startBid);
+        return axios.post(`${url}ajouter`, formData, passJWT())
+        .catch(err => {
+            console.log(err)
+            return err.response;
+        })
     }
 
     static getObject(id) {

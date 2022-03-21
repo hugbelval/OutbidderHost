@@ -1,23 +1,32 @@
 <!-- eslint-disable -->
 <template>
     <div id="formPage">
-         <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
-        <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
-            <path
-                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"
-            />
-        </symbol>
-    </svg>
-    <div id="confirmationContainer"></div>
+        <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
+            <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+                <path
+                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"
+                />
+            </symbol>
+        </svg>
+        <div id="confirmationContainer"></div>
         <h1 class="mb-4">{{ title }}</h1>
+        <p class="text-danger">* obligatoire</p>
         <form @submit="onSubmit" id="objectForm">
             <div id="divName" class="d-flex row">
                 <div class="form-group mb-4 w-70">
-                    <label for="name" class="mb-2">Nom de l'item</label>
+                    <label for="name" class="mb-2">
+                        <span class="text-danger">
+                            <strong>*</strong>
+                        </span> Nom de l'item
+                    </label>
                     <input type="text" class="form-control" id="name" placeholder="Ex: Auto" />
                 </div>
                 <div class="form-group mb-4 w-30">
-                    <label for="endDate" class="mb-2">Date de fin</label>
+                    <label for="endDate" class="mb-2">
+                        <span class="text-danger">
+                            <strong>*</strong>
+                        </span> Date de fin
+                    </label>
                     <input type="datetime-local" class="form-control" id="endDate" />
                 </div>
             </div>
@@ -34,16 +43,24 @@
             </div>
             <div class="d-flex row">
                 <div class="form-group mb-4 w-75">
-                    <label for="image" class="mb-2">Image associée</label>
+                    <label for="objectImage" class="mb-2">
+                        <span class="text-danger">
+                            <strong>*</strong>
+                        </span> Image associée
+                    </label>
                     <input
                         type="file"
                         class="form-control"
                         accept="image/x-png, image/jpeg"
-                        id="image"
+                        id="objectImage"
                     />
                 </div>
                 <div class="form-group mb-4 w-25">
-                    <label for="startBid" class="mb-2">Prix de départ ($)</label>
+                    <label for="startBid" class="mb-2">
+                        <span class="text-danger">
+                            <strong>*</strong>
+                        </span> Prix de départ ($)
+                    </label>
                     <input type="number" min="1" step="any" class="form-control" id="startBid" />
                 </div>
             </div>
@@ -73,10 +90,9 @@ export default {
             const name = $("#name").val().trim();
             const endDate = $("#endDate").val();
             const description = $("#description").val().trim();
-            const image = $("#image")[0].files[0]
+            const image = $("#objectImage")[0].files[0]
             const startBid = $("#startBid").val().trim();
-            const errors = this.validate(name, endDate, image, startBid)
-
+            const errors = this.validate(name, endDate, description, image, startBid)
             if (Object.keys(errors).length != 0) {
                 const div = $("<div id='errors' class='text-danger bg-black rounded p-3 mb-3'><h2>Champs erronés</h2></div>")
                 const ul = $(`<ul></ul>`)
@@ -96,46 +112,66 @@ export default {
                     description: description,
                     //Aller chercher l'identifiant de l'utilisateur
                     seller: "6224e7247a86f2cf9e351dc7",
-                    currentBid: startBid,
+                    startBid: startBid,
                 }
                 await ObjectService.postObject(object, image)
-                $("#name").val('');
-                $("#endDate").val('');
-                $("#description").val('');
-                $("#image").val('');
-                $("#startBid").val('');
-
-                const confirm = $("#confirmationContainer");
-                if (confirm.is(':empty')) {
-                    const confirmation = $(`<div class="alert alert-success d-flex align-items-center" role="alert">
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-                    <div>Item ajouté avec succès !</div> </div>`)
-                    confirm.append(confirmation)
-                }
-                setTimeout(function () {
-                    confirm.empty()
-                    confirm.css("display", "")
-                }, 2000)
+                    .then(res => {
+                        if (res.status == 201) {
+                            $("#name").val('');
+                            $("#endDate").val('');
+                            $("#description").val('');
+                            $("#objectImage").val('');
+                            $("#startBid").val('');
+                            const confirm = $("#confirmationContainer");
+                            if (confirm.is(':empty')) {
+                                const confirmation = $(`<div class="alert alert-success d-flex align-items-center" role="alert">
+                                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+                                <div>Item ajouté avec succès !</div> </div>`)
+                                confirm.append(confirmation)
+                            }
+                            setTimeout(function () {
+                                confirm.empty()
+                                confirm.css("display", "")
+                            }, 2000)
+                        } else {
+                            const div = $("<div id='errors' class='text-danger bg-black rounded p-3 mb-3'><h2>Champs erronés</h2></div>")
+                            const ul = $(`<ul></ul>`)
+                            let i = 0;
+                            for (const key of Object.keys(res.data.errors)) {
+                                i++;
+                                if (res.data.errors[key].msg != "Invalid value") {
+                                    $(`#${key}`).after($(`<p id=error${i} class="text-danger"><strong>${res.data.errors[key].msg}</strong></p>`))
+                                    ul.append(`<li>${res.data.errors[key].msg}</li>`)
+                                }
+                            }
+                            div.append(ul)
+                            $("#divName").prepend(div)
+                        }
+                    })
             }
         },
-        validate(name, endDate, image, startBid) {
+        validate(name, endDate, description, image, startBid) {
             const errors = {}
+            const regexAlphaNum = /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ.,'!&]*$/
             if (name == "") {
                 errors["name"] = "Le nom ne peut pas être vide."
+            } else if (!regexAlphaNum.test(name)) {
+                errors["name"] = "Le nom doit être alphanumérique."
+            }
+
+            if (description.length > 2000) {
+                errors["description"] = "La description ne peut être plus de 2000 caractères."
+            } else if (!regexAlphaNum.test(description)) {
+                errors["description"] = "La description doit être alphanumérique."
             }
 
             if (endDate == "") {
                 errors["endDate"] = "Une date doit être sélectionnée."
-            } else if (new Date(endDate) < new Date()) {
+            } else if (new Date(endDate) <= new Date()) {
                 errors["endDate"] = "La date sélectionnée doit être plus grande que celle d'aujourd'hui."
             }
-
             if (!image) {
-                errors["image"] = "Une image doit être ajoutée à votre item en vente."
-            } else if (image > 1000 * 1000) {
-                errors["image"] = "L'image est trop grande. Elle doit être sous 1 MB."
-            } else if (image.name.split(".")[0] > 25) {
-                errors["image"] = "Le nom de l'image doit être sous 25 lettres."
+                errors["objectImage"] = "Une image doit être ajoutée à votre item en vente."
             }
 
             if (startBid == "") {
