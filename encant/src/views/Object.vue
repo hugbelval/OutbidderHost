@@ -1,15 +1,16 @@
 <!-- eslint-disable -->
 <template>
   <div class="mt-5">
-    <div class="text-center">
+    <div class="text-center" id="spinner">
       <SpinnerVue/>
     </div>
     <div>
-      <div class="rounded-top nameBid">
-        <h2>{{ object.name }}</h2>
+      <!-- Validation si buyer ou seller -->
+      <div v-if="true">
+        <ObjectBuyerVue :object="object" :objectImage="objectImage"/>
       </div>
-      <div class="bidColor rounded-bottom p-5">
-        <h3 class="mt-5">Description : {{ object.description }}</h3>
+      <div v-else>
+        <ObjectSellerVue :object="object" :objectImage="objectImage"/>
       </div>
     </div>
   </div>
@@ -18,22 +19,28 @@
 /* eslint-disable */
 import ObjectService from "@/ObjectService";
 import SpinnerVue from "@/components/Spinner.vue";
+import ObjectBuyerVue from "@/components/ObjectBuyer.vue";
+import ObjectSellerVue from "@/components/ObjectSeller.vue";
 import $ from "jquery"
 
 export default {
   name: "VueObject",
   components:{
-    SpinnerVue:SpinnerVue
+    SpinnerVue:SpinnerVue,
+    ObjectSellerVue:ObjectSellerVue,
+    ObjectBuyerVue:ObjectBuyerVue
   },
   data() {
     return {
       object: {},
+      objectImage: "",
       error: ""
     };
   },
   async created() {
     try {
       this.object = await ObjectService.getObject(this.$route.params.objectId);
+      this.objectImage = `img/${this.object.image}`
     } catch (err) {
       this.error = err.message;
     }
@@ -41,14 +48,3 @@ export default {
   }
 };
 </script>
-<style scoped lang="scss">
-.nameBid {
-  padding: 25px 0 25px 35px;
-  background-color: rgb(202, 196, 196);
-  color: black;
-}
-.bidColor{
-  background-color: rgb(231, 182, 182);
-}
-
-</style>

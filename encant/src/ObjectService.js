@@ -35,7 +35,6 @@ class ObjectService {
             formData.append("objectImage", "unexistant")
         }
         formData.append("name", object.name);
-        formData.append("startDate", object.startDate);
         formData.append("endDate", object.endDate);
         formData.append("description", object.description);
         formData.append("startBid", object.startBid);

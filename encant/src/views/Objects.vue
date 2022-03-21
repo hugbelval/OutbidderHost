@@ -45,6 +45,7 @@
 import ObjectService from "@/ObjectService";
 import SpinnerVue from "@/components/Spinner.vue";
 import $ from "jquery";
+const moment = require("moment-timezone")
 
 export default {
   name: "VueObjects",
@@ -66,8 +67,9 @@ export default {
       const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
         "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
       const moment = endDate.split("T");
+      console.log(moment)
       const date = moment[0].split("-");
-      return `${monthNames[parseInt(date[1])]} ${date[2]} ${date[0]} à ${moment[1].split(".")[0]}`
+      return `${date[2]} ${monthNames[parseInt(date[1])]} ${date[0]} à ${moment[1].split("-")[0]}`
     },
     async Reload() {
       const confirm = $("#confirmationContainer");
@@ -102,7 +104,7 @@ export default {
 
           const bottomObject = $(`<div class="bottomObject rounded-bottom"></div>`)
           bottomObject.append(`<p class="text-light mb-4"><strong>Mise actuelle :</strong> ${this.Currency(objectData.currentBid)}</p>`)
-          bottomObject.append(`<p class="text-light mb-4"><strong>Date de fin : </strong>${this.SetTime(objectData.endDate)}</p>`)
+          bottomObject.append(`<p class="text-light mb-4"><strong>Date de fin : </strong>${this.SetTime(moment(new Date(objectData.endDate).toISOString()).tz('America/New_York').format())}</p>`)
           bottomObject.append(`<div class="text-center">
                 <img class="mb-4 text-white w-100" src="img/${objectData.image}" alt="Image de l'item"></div>`)
           bottomObject.append(`<a href="${objectData._id}" class="btn w-100 p-2 btnChange">Miser</a>`)
