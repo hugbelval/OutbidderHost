@@ -5,8 +5,6 @@ const fs = require("fs");
 const { promisify } = require('util');
 let imageName;
 const { body, validationResult } = require('express-validator');
-const fs = require("fs");
-const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 
 const unlinkAsync = promisify(fs.unlink)
@@ -20,8 +18,6 @@ const storage = multer.diskStorage({
         cb(null, imageName)
     }
 });
-
-const unlinkAsync = promisify(fs.unlink)
 
 const upload = multer({storage: storage});
 
