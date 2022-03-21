@@ -1,9 +1,13 @@
 const express = require('express');
-const Object = require('../../models/object');
+const ObjectUser = require('../../models/object');
 const multer = require("multer");
 const fs = require("fs");
 const { promisify } = require('util');
 let imageName;
+const { body, validationResult } = require('express-validator');
+const fs = require("fs");
+const { promisify } = require('util');
+const jwt = require('jsonwebtoken');
 
 const unlinkAsync = promisify(fs.unlink)
 
@@ -17,12 +21,14 @@ const storage = multer.diskStorage({
     }
 });
 
+const unlinkAsync = promisify(fs.unlink)
+
 const upload = multer({storage: storage});
 
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-    Object.find()
+    ObjectUser.find()
     .then(objects => {
         res.send(objects);
     })
@@ -34,7 +40,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:objectId', async (req, res) => {
-    Object.findById(req.params.objectId)
+    ObjectUser.findById(req.params.objectId)
     .then(object => {
         res.send(object);
     })
@@ -45,25 +51,55 @@ router.get('/:objectId', async (req, res) => {
     })
 })
 
-router.post('/ajouter',upload.single('objectImage'),async (req, res) => {
-    //await unlinkAsync(req.file.path)
-    new Object ({
+router.post('/ajouter',upload.single('objectImage'),
+    body("name").isLength({min:1}).withMessage("Le nom ne peut pas être vide.")
+    .matches(/^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ.,'!&]*$/).withMessage("Le nom doit être alphanumérique."),
+    body("description").isLength({max:2000}).withMessage("La description ne peut être plus de 2000 caractères.")
+    .matches(/^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ.,'!&]*$/).withMessage("La description doit être alphanumérique."),
+    body("endDate")
+    .custom(value => {
+        if(new Date(value) <= new Date()){
+            return Promise.reject("La date sélectionnée doit être plus grande que celle d'aujourd'hui.")
+        } else if (value == "Invalid Date"){
+            return Promise.reject("Une date doit être sélectionnée.")
+        }
+    }),
+    body("objectImage")
+    .custom(value => {
+        if(typeof value == "string"){
+            return Promise.reject("Une image doit être ajoutée à votre item en vente.")
+        }
+    }),
+    body("startBid").isLength({min:1}).withMessage("Il faut mettre un montant de base à l'item."),
+    async (req, res) => {
+    const errors = validationResult(req).mapped();
+    for (const key of Object.keys(errors)) {
+        if(errors[key].msg == "Invalid value"){
+            delete errors[key]
+        }
+    }
+    if(Object.keys(errors).length != 0){
+        if(typeof req.body.objectImage != "string"){
+            await unlinkAsync(req.file.path)
+        }
+        return res.status(400).json({errors: errors, objectData:req.body});
+    }
+    new ObjectUser ({
         name: req.body.name,
-        startDate: req.body.startDate,
         endDate: req.body.endDate,
         description: req.body.description,
-        seller: req.body.seller,
-        currentBid: req.body.currentBid,
+        seller: jwt.verify(req.headers["authorization"].split(" ")[1], process.env.SECRET_JWT).userId,
+        currentBid: req.body.startBid,
         image: imageName
     })
     .save()
-    .then(result => {
-        console.log(result)
+    .then(() => {
         res.status(201).send()
     })
     .catch(err => {
         console.log('err', err);
     });
+    
 })
 
 module.exports = router;

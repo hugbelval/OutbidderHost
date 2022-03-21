@@ -15,7 +15,7 @@
     <div id="confirmationContainer" class="mb-5"></div>
     <div>
       <div class="mb-4">
-        <button class="btn reload" v-on:click="Reload">
+        <button class="btn reload" id="btnReload" v-on:click="Reload">
           <strong>
             Recharger les items
             <svg
@@ -45,6 +45,7 @@
 import ObjectService from "@/ObjectService";
 import SpinnerVue from "@/components/Spinner.vue";
 import $ from "jquery";
+const moment = require("moment-timezone")
 
 export default {
   name: "VueObjects",
@@ -52,7 +53,7 @@ export default {
     SpinnerVue: SpinnerVue,
   },
   async created() {
-    this.LoadData(await ObjectService.getObjects());
+    this.LoadData(await ObjectService.getObjects())
     $("#spinner").remove();
   },
   methods: {
@@ -66,8 +67,9 @@ export default {
       const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
         "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
       const moment = endDate.split("T");
+      console.log(moment)
       const date = moment[0].split("-");
-      return `${monthNames[parseInt(date[1])]} ${date[2]} ${date[0]} à ${moment[1].split(".")[0]}`
+      return `${date[2]} ${monthNames[parseInt(date[1])]} ${date[0]} à ${moment[1].split("-")[0]}`
     },
     async Reload() {
       const confirm = $("#confirmationContainer");
@@ -88,27 +90,29 @@ export default {
     LoadData(data) {
       const objectsList = $("#objectsList");
       objectsList.empty();
-      data.forEach(objectData => {
-        const object = $(`<div class="col-4 mb-2"></div>`)
+      if (data.length == 0) {
+        objectsList.append("<h2 class='noObjects'>Aucun item n'a été trouvé</h2>")
+        $("#btnReload").hide()
+      } else {
+        $("#btnReload").show()
+        data.forEach(objectData => {
+          const object = $(`<div class="col-4 mb-2"></div>`)
 
-        const topObject = $(`<div class="rounded-top topObject"></div>`)
-        topObject.append(`<h3 class="text objectName"><strong>${objectData.name}</strong></h3>`)
-        object.append(topObject);
+          const topObject = $(`<div class="rounded-top topObject"></div>`)
+          topObject.append(`<h3 class="text objectName"><strong>${objectData.name}</strong></h3>`)
+          object.append(topObject);
 
-        const bottomObject = $(`<div class="bottomObject rounded-bottom"></div>`)
-        if (objectData.mostRecentBidder) {
+          const bottomObject = $(`<div class="bottomObject rounded-bottom"></div>`)
           bottomObject.append(`<p class="text-light mb-4"><strong>Mise actuelle :</strong> ${this.Currency(objectData.currentBid)}</p>`)
-        } else {
-          bottomObject.append(`<p class="text-light mb-4"><strong>Prix de départ :</strong> ${this.Currency(objectData.currentBid)}</p>`)
-        }
-        bottomObject.append(`<p class="text-light mb-4"><strong>Date de fin : </strong>${this.SetTime(objectData.endDate)}</p>`)
-        bottomObject.append(`<div class="text-center">
-                <img class="mb-4 text-white w-100 imgBackground" src="img/${objectData.image}" alt="Image de l'item"></div>`)
-        bottomObject.append(`<a href="${objectData._id}" class="btn w-100 p-2 btnChange">Miser</a>`)
-        object.append(bottomObject);
+          bottomObject.append(`<p class="text-light mb-4"><strong>Date de fin : </strong>${this.SetTime(moment(new Date(objectData.endDate).toISOString()).tz('America/New_York').format())}</p>`)
+          bottomObject.append(`<div class="text-center">
+                <img class="mb-4 text-white w-100" src="img/${objectData.image}" alt="Image de l'item"></div>`)
+          bottomObject.append(`<a href="${objectData._id}" class="btn w-100 p-2 btnChange">Miser</a>`)
+          object.append(bottomObject);
 
-        objectsList.append(object);
-      });
+          objectsList.append(object);
+        });
+      }
     }
   }
 };
@@ -152,7 +156,9 @@ export default {
   background-color: rgb(50, 190, 22);
   color: rgb(37, 37, 37);
 }
-.imgBackground{
-    box-shadow: 0px 0px 5px red;
+
+.noObjects{
+  margin: 250px 0;
+  text-align: center;
 }
 </style>

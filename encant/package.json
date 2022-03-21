@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --dest ../server/public",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -12,6 +12,7 @@
     "core-js": "^3.8.3",
     "form-data": "^4.0.0",
     "jquery": "^3.6.0",
+    "moment-timezone": "^0.5.34",
     "register-service-worker": "^1.7.2",
     "vue": "^3.2.31",
     "vue-router": "^4.0.3",
