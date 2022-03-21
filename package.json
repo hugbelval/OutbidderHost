@@ -4,6 +4,7 @@
   "description": "Full Stack vue",
   "main": "index.js",
   "scripts": {
+    "build": "vue-cli-service build",
     "start": "node server/index.js",
     "dev": "nodemon server/index.js"
   },
