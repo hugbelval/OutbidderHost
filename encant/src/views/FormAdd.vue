@@ -1,6 +1,6 @@
 <!-- eslint-disable -->
 <template>
-  <FormObjectVue :title="title" class="w-50 background p-5 rounded mt-5"/>
+  <FormObjectVue :title="title" class="w-50 bg-warning p-5 rounded mt-5"/>
 </template>
 
 <script>/* eslint-disable */
@@ -28,7 +28,4 @@ export default {
 }
 </script>
 <style lang="scss">
-.background{
-  background-color:#cfc31c;
-}
 </style>

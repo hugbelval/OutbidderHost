@@ -53,7 +53,6 @@ router.post('/ajouter',upload.single('objectImage'),async (req, res) => {
     })
     .save()
     .then(result => {
-        console.log(result)
         res.status(201).send()
     })
     .catch(err => {
