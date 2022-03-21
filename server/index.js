@@ -23,7 +23,6 @@ app.all('*', function(req, res, next) {
     const authHeader = req.headers["authorization"];
     if (authHeader && authHeader.startsWith("Bearer ")){
       const token = authHeader.split(" ")[1];
-      console.log(token)
       if (token && jwt.verify(token, process.env.SECRET_JWT)) return next();
     }
     return res.sendStatus(401);

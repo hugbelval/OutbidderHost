@@ -32,7 +32,6 @@ router.post('/signup',
 body('email').isLength({min:1}).withMessage("L'email est requis").isEmail().withMessage("L'email est non valide").custom(value => {
     return User.findOne({email:value}).then(user => {
       if (user) {
-          console.log(user)
         return Promise.reject('Email déja utilisé');
       }
     });}),
@@ -44,7 +43,6 @@ body('lastname').isLength({min:1}).withMessage("Le nom est requis").isLength({ma
 .matches(/^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ.,'!&]*$/).withMessage("Le nom doit être alphanumérique"),
 body('phone').isLength({min:10, max:10}).withMessage("Le téléphone doit contenir 10 chiffres").matches(/^[0-9]*$/).withMessage("Le téléphone doit contenir seulement des chiffres"),
 async (req, res, next) =>{
-    console.log("Body: %j", req.body);
     const email = req.body.email;
     const password = req.body.password;
     const firstname = req.body.firstname;
@@ -52,14 +50,12 @@ async (req, res, next) =>{
     const phone = req.body.phone;
     
     const errors = validationResult(req).mapped();
-    if(!Object.keys(errors).length === 0){
+    if(!(Object.keys(errors).length === 0)){
         return res.status(400).json({errors: errors, userdata:req.body});
     }
-    console.log("Body ok");
     bcrypt
     .hash(password, 12)
     .then((hashedPassword) => {
-        console.log("Creating user");
         const user = new User({
             email: email,
             password: hashedPassword,

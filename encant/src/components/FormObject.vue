@@ -162,8 +162,6 @@ export default {
             } else if (!regexAlphaNum.test(description)) {
                 errors["description"] = "La description doit être alphanumérique."
             }
-            console.log(endDate)
-            console.log(new Date(endDate))
             if (endDate == "") {
                 errors["endDate"] = "Une date doit être sélectionnée."
             } else if (new Date(endDate) <= new Date()) {

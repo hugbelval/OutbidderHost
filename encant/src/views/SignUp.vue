@@ -60,7 +60,6 @@ export default {
     methods : {
         // Ajax
         onChange(){
-            console.log("allo");
             //Validation avec la bd pour le nom
         },
 
@@ -74,17 +73,14 @@ export default {
             const firstname = $("#firstname").val().trim();
             const lastname = $("#lastname").val().trim();
             const phone = $("#phone").val().trim();
-            const errors = this.validate(email, password, firstname, lastname, phone)
-
+            const errors = this.validate(email, password, firstname, lastname, phone);
             if (Object.keys(errors).length != 0) {
                 let i = 0;
                 for (const key of Object.keys(errors)) {
                     i++;
-                    console.log("error in :" + key);
                     $(`#${key}`).after($(`<p id=error${i} class="text-danger"><strong>${errors[key]}</strong></p>`))
                 }
             } else{
-                console.log("logged");
                 UserService.signup(
                 {
                     email: this.email,
@@ -94,24 +90,18 @@ export default {
                     phone: this.phone
                 })
                 .then(res => {
-                    console.log("then")
                     if(res.status == 200){
-                        console.log("code 200")
-                        console.log(localStorage.getItem("user-token"))
                         router.push("/objects");
                     }
                     //Messages erreur
                     else{
-                        console.log("error" + res.status)
                         this.email = res.data.userdata.email;
                         this.firstname = res.data.userdata.firstname;
                         this.lastname = res.data.userdata.lastname;
                         this.phone = res.data.userdata.phone;
                         let i = 0;
-                        console.log("errors %j", res.data.errors)
                         for (const key of Object.keys(res.data.errors)) {
                             i++;
-                            console.log("error in :" + key);
                             $(`#${key}`).after($(`<p id=error${i} class="text-danger"><strong>${res.data.errors[key].msg}</strong></p>`))
                          }
                     }

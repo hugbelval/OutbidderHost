@@ -9,7 +9,6 @@ class UserService {
         return new Promise(async (resolve, reject) => {
             try {
                 const res = await axios.get(url);
-                console.log("Trouver utilisateurs...2 "+ res.data);
                 const data = res.data;
                 resolve(data);
             } catch(err){
@@ -32,20 +31,7 @@ class UserService {
             });
         }
 
-    // static login(user) {
-    //     return new Promise(async (resolve, reject) => {
-    //         try {
-    //             const res = axios.post(`${url}login`, user);
-    //             const token = res.token;
-    //             localStorage.setItem('user-token', token);
-    //             resolve(token);
-    //         } catch(err){
-    //             console.log("Erreur connexion");
-    //             localStorage.removeItem('user-token');
-    //             reject(err);
-    //         }
-    //     });
-    // }
+
 
     static login(user) {
         return axios.post(`${url}login`, user, { validateStatus: false })
@@ -55,7 +41,6 @@ class UserService {
                         localStorage.setItem('user-token', token);
                         return res;
                     }
-                    console.log("Code pas 200");
                     localStorage.removeItem('user-token');
                     return res;
                 })
