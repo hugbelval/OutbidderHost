@@ -133,11 +133,13 @@ export default {
             setInterval(function () {
                 $("#time").empty()
                 let seconds = (new Date(endDate) - new Date()) / 1000;
+                const days = parseInt(seconds / 86400);
+                seconds = seconds % 86400
                 const hours = parseInt(seconds / 3600)
                 seconds = seconds % 3600
                 const minutes = parseInt(seconds / 60);
                 seconds = seconds % 60
-                $("#time").append(`${hours} heures, ${minutes} minutes, ${Math.round(seconds)} secondes`)
+                $("#time").append(`${days} jours, ${hours} heures, ${minutes} minutes, ${Math.round(seconds)} secondes`)
             }, 1000)
         },
         LoadDate(endDateUTC, startDateUTC) {

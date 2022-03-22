@@ -94,7 +94,8 @@ export default {
         $("#btnReload").hide()
       } else {
         $("#btnReload").show()
-        data.forEach(objectData => {
+        data.objects.forEach(objectData => {
+          
           const object = $(`<div class="col-4 mb-2"></div>`)
 
           const topObject = $(`<div class="rounded-top topObject"></div>`)
@@ -111,6 +112,12 @@ export default {
           bottomObject.append(`<div class="text-center">
                 <img class="mb-4 text-white w-100 imgBackground" src="img/${objectData.image}" alt="Image de l'item"></div>`)
           bottomObject.append(`<a href="${objectData._id}" class="btn w-100 p-2 btnChange">Miser</a>`)
+
+          if(objectData.mostRecentBidder === data.userId){
+            bottomObject.prepend(`<h3 class="text-white mb-3 bidded bg-success text-center">Misé</h3>`)
+          } else if(objectData.seller === data.userId){
+            bottomObject.prepend(`<h3 class="mb-3 bidded bg-warning text-center">Propriétaire</h3>`)
+          }
           object.append(bottomObject);
 
           objectsList.append(object);
@@ -142,6 +149,12 @@ export default {
   font-family: "Kanit", sans-serif;
   font-size: 2.2rem;
 }
+
+.bidded{
+  font-family: "Kanit", sans-serif;
+  padding: 15px;
+}
+
 .btnChange {
   background-color: rgb(114, 20, 20);
   font-size: 1.2rem;
