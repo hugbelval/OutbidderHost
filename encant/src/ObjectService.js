@@ -45,6 +45,20 @@ class ObjectService {
         })
     }
 
+    static bid(currentBid, id){
+        return new Promise(async (resolve, reject) => {
+            try {
+                const res = await axios.put(`${url}${id}`, {
+                    currentBid:currentBid
+                } ,passJWT())
+                const data = res.data;
+                resolve(data);
+            } catch(err){
+                reject(err);
+            }
+        });
+    }
+
     static getObject(id) {
         return new Promise(async (resolve, reject) => {
             try {

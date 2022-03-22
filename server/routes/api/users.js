@@ -128,6 +128,33 @@ router.post('/login',  async (req, res, next) => {
       });
 });
 
+router.get('/:id', async (req, res) => {
+    await User.findById(req.params.id)
+    .then(user => {
+        res.send({
+            firstname : user.firstname,
+            lastname : user.lastname,
+        });
+    })
+    .catch(err => {
+        if (!err.statusCode) {
+            err.statusCode = 500;
+        }
+    })
+})
+
+// Faire la route
+router.get('/user/:id', async (req, res) => {
+    await User.findById(req.params.id)
+    .then(user => {
+        res.send(user);
+    })
+    .catch(err => {
+        if (!err.statusCode) {
+            err.statusCode = 500;
+        }
+    })
+})
 
 // Delete User
 router.delete('/:id', async (req, res) => {

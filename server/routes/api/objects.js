@@ -38,13 +38,30 @@ router.get('/', async (req, res) => {
 router.get('/:objectId', async (req, res) => {
     ObjectUser.findById(req.params.objectId)
     .then(object => {
-        res.send(object);
+        res.send({
+            userId:jwt.verify(req.headers["authorization"].split(" ")[1], process.env.SECRET_JWT).userId,
+            object:object
+        })
     })
     .catch(err => {
         if (!err.statusCode) {
             err.statusCode = 500;
         }
     })
+})
+
+router.put('/:objectId', async (req, res) => {
+    ObjectUser.findByIdAndUpdate(req.params.objectId,{
+        currentBid: req.body.currentBid,
+        mostRecentBidder: jwt.verify(req.headers["authorization"].split(" ")[1], process.env.SECRET_JWT).userId
+    }, {
+        new:true
+    })
+    .then(object => {
+        return res.status(201).json({
+            newBid:object.currentBid
+        });
+      })
 })
 
 router.post('/ajouter',upload.single('objectImage'),
