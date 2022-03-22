@@ -2,7 +2,7 @@
 <template>
     <footer>
         <div class="py-3 px-2">
-            <h1>Made by Gabriel Morris / Hugo Bellemare</h1>
+            <h1>Fait par Gabriel Morris / Hugo Bellemare</h1>
         </div>
     </footer>
 </template>

@@ -3,33 +3,34 @@ import axios from "axios";
 axios.defaults.baseURL = 'http://localhost:5000';
 const url = 'users/';
 
-class UserService {
-    // Get Users
-    static getUsers() {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const res = await axios.get(url);
-                const data = res.data;
-                resolve(data);
-            } catch(err){
-                console.log("Erreur promesse");
-                reject(err);
-            }
-        });
+function passJWT() {
+  const token = localStorage.getItem("user-token");
+  if (token) {
+    return {
+      headers: {
+        "authorization": `Bearer ${token}`
+      }
     }
+  } else {
+    return null;
+  }
+}
 
-    // Create User
-    static signup(user) {
-        return axios.post(`${url}signup`, user)
-            .then(res => {
-                return this.login(user);
-            })
-            .catch(err => {
-                console.log("Erreur creation");
-                console.log(err);
-                return err.response;
-            });
-        }
+class UserService {
+  // Get Users
+  static getUsers() {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await axios.get(url);
+        console.log("Trouver utilisateurs...2 " + res.data);
+        const data = res.data;
+        resolve(data);
+      } catch (err) {
+        console.log("Erreur promesse");
+        reject(err);
+      }
+    });
+  }
 
 
 
@@ -50,12 +51,22 @@ class UserService {
                     return err;
                 })
         }
+        console.log("Code pas 200");
+        localStorage.removeItem('user-token');
+        return res;
+      })
+      .catch(err => {
+        console.log(err);
+        localStorage.removeItem('user-token');
+        return err;
+      })
+  }
 
 
-    // Delete user
-    static deleteUser(id) {
-        return axios.delete(`${url}${id}`);
-    }
+  // Delete user
+  static deleteUser(id) {
+    return axios.delete(`${url}${id}`);
+  }
 }
 
 export default UserService;

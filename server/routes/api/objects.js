@@ -11,7 +11,7 @@ const unlinkAsync = promisify(fs.unlink)
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb){
-        cb(null, '../encant/encant/public/img/')
+        cb(null, './encant/public/img/')
     },
     filename: function(req, file, cb){
         imageName = new Date().getTime() + file.originalname;
@@ -26,7 +26,10 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     ObjectUser.find()
     .then(objects => {
-        res.send(objects);
+        res.send({
+            objects:objects,
+            userId:jwt.verify(req.headers["authorization"].split(" ")[1], process.env.SECRET_JWT).userId
+        });
     })
     .catch(err => {
         if (!err.statusCode) {
@@ -38,13 +41,30 @@ router.get('/', async (req, res) => {
 router.get('/:objectId', async (req, res) => {
     ObjectUser.findById(req.params.objectId)
     .then(object => {
-        res.send(object);
+        res.send({
+            userId:jwt.verify(req.headers["authorization"].split(" ")[1], process.env.SECRET_JWT).userId,
+            object:object
+        })
     })
     .catch(err => {
         if (!err.statusCode) {
             err.statusCode = 500;
         }
     })
+})
+
+router.put('/:objectId', async (req, res) => {
+    ObjectUser.findByIdAndUpdate(req.params.objectId,{
+        currentBid: req.body.currentBid,
+        mostRecentBidder: jwt.verify(req.headers["authorization"].split(" ")[1], process.env.SECRET_JWT).userId
+    }, {
+        new:true
+    })
+    .then(object => {
+        return res.status(201).json({
+            newBid:object.currentBid
+        });
+      })
 })
 
 router.post('/ajouter',upload.single('objectImage'),

@@ -67,7 +67,6 @@ export default {
       const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
         "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
       const moment = endDate.split("T");
-      console.log(moment)
       const date = moment[0].split("-");
       return `${date[2]} ${monthNames[parseInt(date[1])]} ${date[0]} à ${moment[1].split("-")[0]}`
     },
@@ -95,19 +94,30 @@ export default {
         $("#btnReload").hide()
       } else {
         $("#btnReload").show()
-        data.forEach(objectData => {
+        data.objects.forEach(objectData => {
+          
           const object = $(`<div class="col-4 mb-2"></div>`)
 
           const topObject = $(`<div class="rounded-top topObject"></div>`)
           topObject.append(`<h3 class="text objectName"><strong>${objectData.name}</strong></h3>`)
           object.append(topObject);
-
           const bottomObject = $(`<div class="bottomObject rounded-bottom"></div>`)
-          bottomObject.append(`<p class="text-light mb-4"><strong>Mise actuelle :</strong> ${this.Currency(objectData.currentBid)}</p>`)
+          if (objectData.mostRecentBidder) {
+            bottomObject.append(`<p class="text-light mb-4"><strong>Mise actuelle :</strong> ${this.Currency(objectData.currentBid)}</p>`)
+          } else {
+            bottomObject.append(`<p class="text-light mb-4"><strong>Prix de départ :</strong> ${this.Currency(objectData.currentBid)}</p>`)
+          }
+          bottomObject.append(`<p class="text-light mb-4"><strong>Date de début : </strong>${this.SetTime(moment(new Date(objectData.startDate).toISOString()).tz('America/New_York').format())}</p>`)
           bottomObject.append(`<p class="text-light mb-4"><strong>Date de fin : </strong>${this.SetTime(moment(new Date(objectData.endDate).toISOString()).tz('America/New_York').format())}</p>`)
           bottomObject.append(`<div class="text-center">
-                <img class="mb-4 text-white w-100" src="img/${objectData.image}" alt="Image de l'item"></div>`)
+                <img class="mb-4 text-white w-100 imgBackground" src="img/${objectData.image}" alt="Image de l'item"></div>`)
           bottomObject.append(`<a href="${objectData._id}" class="btn w-100 p-2 btnChange">Miser</a>`)
+
+          if(objectData.mostRecentBidder === data.userId){
+            bottomObject.prepend(`<h3 class="text-white mb-3 bidded bg-success text-center">Misé</h3>`)
+          } else if(objectData.seller === data.userId){
+            bottomObject.prepend(`<h3 class="mb-3 bidded bg-warning text-center">Propriétaire</h3>`)
+          }
           object.append(bottomObject);
 
           objectsList.append(object);
@@ -131,10 +141,20 @@ export default {
   word-wrap: break-word;
 }
 
+.imgBackground {
+  box-shadow: 0px 0px 5px red;
+}
+
 .objectName {
   font-family: "Kanit", sans-serif;
   font-size: 2.2rem;
 }
+
+.bidded{
+  font-family: "Kanit", sans-serif;
+  padding: 15px;
+}
+
 .btnChange {
   background-color: rgb(114, 20, 20);
   font-size: 1.2rem;
@@ -157,7 +177,7 @@ export default {
   color: rgb(37, 37, 37);
 }
 
-.noObjects{
+.noObjects {
   margin: 250px 0;
   text-align: center;
 }
