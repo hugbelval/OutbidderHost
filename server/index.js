@@ -28,8 +28,19 @@ app.all('*', function(req, res, next) {
     return res.sendStatus(401);
   }
 });
+
 app.use('/users', users);
 app.use('/encant', objects);
+
+app.use(function (err, req, res, next) {
+  if (!err.statusCode) err.statusCode = 500;
+  res.status(err.statusCode).json({ 
+    message: err.message, 
+    statusCode: err.statusCode, 
+    ...err.data
+  });
+});
+
 
 // Handle production
 if(process.env.NODE_ENV === 'production') {

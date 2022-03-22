@@ -92,8 +92,7 @@ export default {
             const description = $("#description").val().trim();
             const image = $("#objectImage")[0].files[0]
             const startBid = $("#startBid").val().trim();
-            //const errors = this.validate(name, endDate, description, image, startBid)
-            const errors = {}
+            const errors = this.validate(name, endDate, description, image, startBid)
             if (Object.keys(errors).length != 0) {
                 const div = $("<div id='errors' class='text-danger bg-black rounded p-3 mb-3'><h2>Champs erronés</h2></div>")
                 const ul = $(`<ul></ul>`)

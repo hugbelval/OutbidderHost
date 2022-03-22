@@ -6,6 +6,7 @@ const { promisify } = require('util');
 let imageName;
 const { body, validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
+const { nextTick } = require('process');
 
 const unlinkAsync = promisify(fs.unlink)
 
@@ -23,27 +24,25 @@ const upload = multer({storage: storage});
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
+    console.log("bonjour");
     ObjectUser.find()
     .then(objects => {
         res.send(objects);
     })
     .catch(err => {
-        if (!err.statusCode) {
-            err.statusCode = 500;
-        }
+        console.log(err);
+        next(err);
     })
 });
 
-router.get('/:objectId', async (req, res) => {
+router.get('/:objectId', async (req, res, next) => {
     ObjectUser.findById(req.params.objectId)
     .then(object => {
         res.send(object);
     })
     .catch(err => {
-        if (!err.statusCode) {
-            err.statusCode = 500;
-        }
+        next(err);
     })
 })
 
@@ -67,7 +66,7 @@ router.post('/ajouter',upload.single('objectImage'),
         }
     }),
     body("startBid").isLength({min:1}).withMessage("Il faut mettre un montant de base à l'item."),
-    async (req, res) => {
+    async (req, res, next) => {
     const errors = validationResult(req).mapped();
     for (const key of Object.keys(errors)) {
         if(errors[key].msg == "Invalid value"){
@@ -76,9 +75,12 @@ router.post('/ajouter',upload.single('objectImage'),
     }
     if(Object.keys(errors).length != 0){
         if(typeof req.body.objectImage != "string"){
-            await unlinkAsync(req.file.path)
+            await unlinkAsync(req.file.path);
         }
-        return res.status(400).json({errors: errors, objectData:req.body});
+        const error = new Error("Requête erronée");
+        error.statusCode = 400;
+        error.data = {errors: errors, objectData:req.body};
+        return next(error);
     }
     new ObjectUser ({
         name: req.body.name,
@@ -93,7 +95,7 @@ router.post('/ajouter',upload.single('objectImage'),
         res.status(201).send()
     })
     .catch(err => {
-        console.log('err', err);
+        return next(error);
     });
     
 })
