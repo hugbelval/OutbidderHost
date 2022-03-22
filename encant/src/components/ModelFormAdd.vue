@@ -11,7 +11,10 @@
                 <section class="modal-body" id="modalDescription">
                     <slot name="body">
                         <form @submit="onSubmit" id="objectForm">
-                            <label for="bid" class="mb-2">Nouvelle mise</label>
+                            <div class="d-flex justify-content-between">
+                                <label for="bid" class="mb-2">Nouvelle mise</label>
+                                <h5>La mise actuelle est de : {{this.Currency(bidMin)}}</h5>
+                            </div>
                             <input
                                 type="number"
                                 step="any"
@@ -58,6 +61,12 @@ export default {
                 this.$emit("newBid", await ObjectService.bid(bid, this.$route.params.objectId))
                 this.$emit('close');
             }
+        },
+        Currency(currentBid) {
+            return new Intl.NumberFormat('en-CA', {
+                style: 'currency',
+                currency: 'CAD'
+            }).format(currentBid)
         }
     },
 }
