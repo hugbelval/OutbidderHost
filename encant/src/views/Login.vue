@@ -47,18 +47,13 @@ export default {
             }
 
             if(true) {
-                console.log("logged");
                 UserService.login(
                 {
                     email: this.email,
                     password: this.password,
                 })
                 .then(res => {
-                    console.log("then")
-                    console.log(res);
                     if(res.status == 200){
-                        console.log("code 200")
-                        console.log(localStorage.getItem("user-token"))
                         router.push("/objects");
                     }
                     //Messages erreur

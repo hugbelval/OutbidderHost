@@ -32,55 +32,24 @@ class UserService {
     });
   }
 
-  static getUser(id) {
-    return axios.get(`${url}${id}`, passJWT())
-      .then(res => {
-        return res.data;
-      })
-      .catch(err => {
-        console.log("Erreur get");
-        console.log(err);
-        return err.response;
-      });
-  }
 
-  // Create User
-  static signup(user) {
-    return axios.post(`${url}signup`, user)
-      .then(res => {
-        return this.login(user);
-      })
-      .catch(err => {
-        console.log("Erreur creation");
-        console.log(err);
-        return err.response;
-      });
-  }
 
-  // static login(user) {
-  //     return new Promise(async (resolve, reject) => {
-  //         try {
-  //             const res = axios.post(`${url}login`, user);
-  //             const token = res.token;
-  //             localStorage.setItem('user-token', token);
-  //             resolve(token);
-  //         } catch(err){
-  //             console.log("Erreur connexion");
-  //             localStorage.removeItem('user-token');
-  //             reject(err);
-  //         }
-  //     });
-  // }
-
-  static login(user) {
-    return axios.post(`${url}login`, user, {
-        validateStatus: false
-      })
-      .then(res => {
-        if (res.status === 200) {
-          const token = res.data.token;
-          localStorage.setItem('user-token', token);
-          return res;
+    static login(user) {
+        return axios.post(`${url}login`, user, { validateStatus: false })
+                .then(res => {
+                    if (res.status === 200){
+                        const token = res.data.token;
+                        localStorage.setItem('user-token', token);
+                        return res;
+                    }
+                    localStorage.removeItem('user-token');
+                    return res;
+                })
+                .catch(err => {
+                    console.log(err);
+                    localStorage.removeItem('user-token');
+                    return err;
+                })
         }
         console.log("Code pas 200");
         localStorage.removeItem('user-token');
