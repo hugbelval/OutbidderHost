@@ -34,24 +34,16 @@ class UserService {
 
 
 
-    static login(user) {
-        return axios.post(`${url}login`, user, { validateStatus: false })
-                .then(res => {
-                    if (res.status === 200){
-                        const token = res.data.token;
-                        localStorage.setItem('user-token', token);
-                        return res;
-                    }
-                    localStorage.removeItem('user-token');
-                    return res;
-                })
-                .catch(err => {
-                    console.log(err);
-                    localStorage.removeItem('user-token');
-                    return err;
-                })
+  static login(user) {
+    return axios.post(`${url}login`, user, {
+        validateStatus: false
+      })
+      .then(res => {
+        if (res.status === 200) {
+          const token = res.data.token;
+          localStorage.setItem('user-token', token);
+          return res;
         }
-        console.log("Code pas 200");
         localStorage.removeItem('user-token');
         return res;
       })
@@ -62,11 +54,10 @@ class UserService {
       })
   }
 
-
-  // Delete user
-  static deleteUser(id) {
-    return axios.delete(`${url}${id}`);
-  }
+// Delete user
+static deleteUser(id) {
+  return axios.delete(`${url}${id}`);
+}
 }
 
 export default UserService;
