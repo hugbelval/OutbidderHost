@@ -38,6 +38,11 @@ const routes = [
     path: '/ajouter',
     name: "FormAdd",
     component: VueAddObject
+  },
+  {
+    path: '/modifier/:objectId',
+    name: "FormModif",
+    component: VueAddObject
   }
 ];
 

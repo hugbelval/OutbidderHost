@@ -124,12 +124,13 @@ router.post('/login',  async (req, res, next) => {
       });
 });
 
-router.get('/:id', async (req, res) => {
-    await User.findById(req.params.id)
+router.get('/id', async (req, res) => {
+    await User.findById(jwt.verify(req.headers["authorization"].split(" ")[1], process.env.SECRET_JWT).userId)
     .then(user => {
         res.send({
             firstname : user.firstname,
             lastname : user.lastname,
+            id: user._id
         });
     })
     .catch(err => {

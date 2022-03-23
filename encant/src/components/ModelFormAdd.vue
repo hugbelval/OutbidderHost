@@ -45,8 +45,6 @@ import ObjectService from "@/ObjectService";
 export default {
     name: "VueModelFormAdd",
     props: ["bidMin"],
-    async created() {
-    },
     methods: {
         close() {
             this.$emit('close');
