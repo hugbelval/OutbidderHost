@@ -32,7 +32,30 @@ class UserService {
     });
   }
 
+  static getUser() {
+    return axios.get(`${url}id`, passJWT())
+      .then(res => {
+        return res.data;
+      })
+      .catch(err => {
+        console.log("Erreur get");
+        console.log(err);
+        return err.response;
+      });
+  }
 
+  // Create User
+  static signup(user) {
+    return axios.post(`${url}signup`, user)
+      .then(res => {
+        return this.login(user);
+      })
+      .catch(err => {
+        console.log("Erreur creation");
+        console.log(err);
+        return err.response;
+      });
+  }
 
   static login(user) {
     return axios.post(`${url}login`, user, {

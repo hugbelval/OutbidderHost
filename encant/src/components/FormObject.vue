@@ -78,7 +78,10 @@ export default {
     name: "FormObjectVue",
     props: ["title"],
     async created() {
-        //Si c'est modification, aller chercher
+        const seller = await UserService.getUser();
+        if(seller === this.$route.params.objectId){
+            const object = await ObjectService.getObject(this.$route.params.objectId);
+        }
     },
     methods: {
         async onSubmit(e) {
@@ -92,8 +95,7 @@ export default {
             const description = $("#description").val().trim();
             const image = $("#objectImage")[0].files[0]
             const startBid = $("#startBid").val().trim();
-            //const errors = this.validate(name, endDate, description, image, startBid)
-            const errors = {}
+            const errors = this.validate(name, endDate, description, image, startBid)
             if (Object.keys(errors).length != 0) {
                 const div = $("<div id='errors' class='text-danger bg-black rounded p-3 mb-3'><h2>Champs erronés</h2></div>")
                 const ul = $(`<ul></ul>`)
@@ -150,7 +152,7 @@ export default {
         },
         validate(name, endDate, description, image, startBid) {
             const errors = {}
-            const regexAlphaNum = /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ.,'!&]*$/
+            const regexAlphaNum = /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ.,'!&\s]*$/
             if (name == "") {
                 errors["name"] = "Le nom ne peut pas être vide."
             } else if (!regexAlphaNum.test(name)) {

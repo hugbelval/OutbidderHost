@@ -7,13 +7,14 @@
         <h3 id="name" class="text objectName">
         </h3>
     </div>
-    <ModelFormAddVue @newBid="GetNewBid" :bidMin="bidMin" class="m-auto" v-show="isModalVisible" @close="closeModal" />
+    
     <div class="bottomObject rounded-bottom">
         <div class="row">
             <div class="col-md-6 line">
                 <h4 id="seller" class="text-light mb-5">
                     <strong>Vendeur: </strong>
                 </h4>
+                <ModelFormAddVue @newBid="GetNewBid" :bidMin="bidMin" class="m-auto" v-show="isModalVisible" @close="closeModal" />
                 <h4 id="price" class="text-light mb-5">
                 </h4>
                 <h4 id="startDate" class="text-light mb-5">
@@ -30,7 +31,7 @@
                 </h4>
                 <h4 id="description" class="text-light mb-5 description">
                 </h4>
-                <div id="bidAction" class="mt-4 text-center">
+                <div id="bidAction" class="mt-4 text-center d-flex justify-content-around">
                     <button class="bid btn btn-primary" @click="showModal">Miser</button>
                 </div>
             </div>
@@ -69,20 +70,32 @@ export default {
     async created() {
         try {
             const data = await ObjectService.getObject(this.$route.params.objectId);
+            
             const objectSpecific = data.object;
             this.LoadDate(objectSpecific.endDate, objectSpecific.startDate)
             this.bidMin = objectSpecific.currentBid;
-            const seller = await UserService.getUser(objectSpecific.seller, "username")
+            const seller = await UserService.getUser()
 
+            if(seller.id === objectSpecific.seller){
+                $("#bidAction").empty()
+                $("#seller").append(`Vous êtes le propriétaire`)
+                if(!objectSpecific.mostRecentBidder){
+                    $("#bidAction").append(`<a href="modifier/${objectSpecific._id}" class="bid btn btn-primary btnSeller">Modifier</a>`)
+                    $("#bidAction").append(`<a href="" class="bid btn btn-primary btnSeller">Supprimer</a>`)
+                }
+            } else {
+                $("#seller").append(`${seller.firstname} ${seller.lastname}`)
+                if(objectSpecific.mostRecentBidder === data.userId){
+                $("#bidAction").append(`<h4 class="text-success">Vous avez la mise !</h4>`)
+            }
+            }
+
+            $("#name").append(`<strong>${objectSpecific.name}</strong>`)
             $("#image").after(`<img
-                        class="text-white w-50 imgBackground"
+                        class="text-white w-100 imgBackground"
                         src="img/${objectSpecific.image}"
                         alt="Image de l'item"
                     />`)
-
-            $("#name").append(`<strong>${objectSpecific.name}</strong>`)
-
-            $("#seller").append(`${seller.firstname} ${seller.lastname}`)
 
             let descMessage;
             if(objectSpecific.description){
@@ -99,11 +112,7 @@ export default {
                 priceMessage = "Prix de départ: "
             }
             $("#price").append(`<strong>${priceMessage}</strong>${this.Currency(objectSpecific.currentBid)}`)
-
-            if(objectSpecific.mostRecentBidder === data.userId){
-                $("#bidAction").empty()
-                $("#bidAction").append(`<h4 class="text-success">Vous avez la mise !</h4>`)
-            }
+            $("#bidAction").removeAttr("hidden");
         } catch (err) {
             this.error = err.message;
         }
@@ -114,7 +123,7 @@ export default {
             $("#price").empty()
             $("#price").append(`<strong>Mise actuelle:</strong> ${this.Currency(data.newBid)}`)
             $("#bidAction").empty()
-             $("#bidAction").append(`<h4 class="text-success">Vous avez la mise !</h4>`)
+            $("#bidAction").append(`<h4 class="text-success">Vous avez la mise !</h4>`)
         },
         Currency(currentBid) {
             return new Intl.NumberFormat('en-CA', {
@@ -160,13 +169,17 @@ export default {
 
 }
 </script>
-<style scoped lang="scss">
+<style lang="scss">
 .description {
     word-wrap: break-word;
 }
 
 .line {
     border-right: 6px solid rgb(50, 190, 22);
+}
+
+.btnSeller{
+    padding: 25px;
 }
 
 .bid {

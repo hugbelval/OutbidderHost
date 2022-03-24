@@ -69,9 +69,9 @@ router.put('/:objectId', async (req, res) => {
 
 router.post('/ajouter',upload.single('objectImage'),
     body("name").isLength({min:1}).withMessage("Le nom ne peut pas être vide.")
-    .matches(/^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ.,'!&]*$/).withMessage("Le nom doit être alphanumérique."),
+    .matches(/^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ.,'!&\s]*$/).withMessage("Le nom doit être alphanumérique."),
     body("description").isLength({max:2000}).withMessage("La description ne peut être plus de 2000 caractères.")
-    .matches(/^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ.,'!&]*$/).withMessage("La description doit être alphanumérique."),
+    .matches(/^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ.,'!&\s]*$/).withMessage("La description doit être alphanumérique."),
     body("endDate")
     .custom(value => {
         if(new Date(value) <= new Date()){

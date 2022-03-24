@@ -111,7 +111,7 @@ export default {
           bottomObject.append(`<p class="text-light mb-4"><strong>Date de fin : </strong>${this.SetTime(moment(new Date(objectData.endDate).toISOString()).tz('America/New_York').format())}</p>`)
           bottomObject.append(`<div class="text-center">
                 <img class="mb-4 text-white w-100 imgBackground" src="img/${objectData.image}" alt="Image de l'item"></div>`)
-          bottomObject.append(`<a href="${objectData._id}" class="btn w-100 p-2 btnChange">Miser</a>`)
+          bottomObject.append(`<a href="${objectData._id}" class="btn w-100 p-2 btnChange">Voir</a>`)
 
           if(objectData.mostRecentBidder === data.userId){
             bottomObject.prepend(`<h3 class="text-white mb-3 bidded bg-success text-center">Misé</h3>`)
