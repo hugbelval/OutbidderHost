@@ -31,7 +31,7 @@
                 </h4>
                 <h4 id="description" class="text-light mb-5 description">
                 </h4>
-                <div hidden id="bidAction" class="mt-4 text-center d-flex justify-content-around">
+                <div id="bidAction" class="mt-4 text-center d-flex justify-content-around">
                     <button class="bid btn btn-primary" @click="showModal">Miser</button>
                 </div>
             </div>

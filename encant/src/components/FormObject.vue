@@ -152,7 +152,7 @@ export default {
         },
         validate(name, endDate, description, image, startBid) {
             const errors = {}
-            const regexAlphaNum = /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ.,'!&]*$/
+            const regexAlphaNum = /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ.,'!&\s]*$/
             if (name == "") {
                 errors["name"] = "Le nom ne peut pas être vide."
             } else if (!regexAlphaNum.test(name)) {
