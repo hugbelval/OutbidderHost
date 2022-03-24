@@ -32,7 +32,7 @@
                 <h4 id="description" class="text-light mb-5 description">
                 </h4>
                 <div id="bidAction" class="mt-4 text-center d-flex justify-content-around">
-                    <button class="bid btn btn-primary" @click="showModal">Miser</button>
+                    <button hidden class="bid btn btn-primary" @click="showModal">Miser</button>
                 </div>
             </div>
             <div class="col-md-6">
@@ -75,7 +75,6 @@ export default {
             this.LoadDate(objectSpecific.endDate, objectSpecific.startDate)
             this.bidMin = objectSpecific.currentBid;
             const seller = await UserService.getUser()
-
             if(seller.id === objectSpecific.seller){
                 $("#bidAction").empty()
                 $("#seller").append(`Vous êtes le propriétaire`)
@@ -86,7 +85,8 @@ export default {
             } else {
                 $("#seller").append(`${seller.firstname} ${seller.lastname}`)
                 if(objectSpecific.mostRecentBidder === data.userId){
-                $("#bidAction").append(`<h4 class="text-success">Vous avez la mise !</h4>`)
+                    $("#bidAction").empty()
+                    $("#bidAction").append(`<h4 class="text-success">Vous avez la mise !</h4>`)
             }
             }
 
