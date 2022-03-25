@@ -74,7 +74,7 @@ router.post('/login',  async (req, res, next) => {
             console.log("User Not found");
             const error = new Error('La combinaison email/mot de passe est incorrecte');
             error.data = {userdata: req.body};
-            error.statusCode = 401;
+            error.statusCode = 400;
             throw error;
         }
         loadedUser = user;
@@ -85,7 +85,7 @@ router.post('/login',  async (req, res, next) => {
             console.log("Wrong password");
             const error = new Error('La combinaison email/mot de passe est incorrecte');
             error.data = {userdata: req.body};
-            error.statusCode = 401;
+            error.statusCode = 400;
             throw error;
         }
         // Création du token JWT

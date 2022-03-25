@@ -1,6 +1,6 @@
 /* eslint-disable */
-import axios from "axios";
-axios.defaults.baseURL = 'http://localhost:5000'
+const axios = require("axios");
+
 const url = 'encant/';
 const FormData = require("form-data")
 

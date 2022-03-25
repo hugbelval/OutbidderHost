@@ -1,6 +1,5 @@
 /* eslint-disable */
-import axios from "axios";
-axios.defaults.baseURL = 'http://localhost:5000';
+const axios = require("axios");
 const url = 'users/';
 
 class UserService {
@@ -20,6 +19,7 @@ class UserService {
 
     // Create User
     static signup(user) {
+        console.log(axios);
         return axios.post(`${url}signup`, user)
             .then(res => {
                 return this.login(user);
